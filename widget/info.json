@@ -3,6 +3,7 @@
     "title": "CICD Configuration",
     "subTitle": "CICD Configuration Wizard",
     "version": "1.0.0",
+    "published_date": "1658838600",
     "metadata": {
         "description": "CICD environment configuration wizard",
         "pages": [],
@@ -13,6 +14,5 @@
         ],
         "standalone": true,
         "windowClass": "Full Width"
-    },
-    "development": true
+    }
 }
