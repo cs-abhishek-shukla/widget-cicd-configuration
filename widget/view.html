@@ -1,0 +1,77 @@
+<div class="modal-header">
+  <h3 class="modal-title col-md-9">CICD Configuration</h3>
+</div>
+<div data-ng-if="widgetCompleted" class="cs-wizard ingestion-steps">
+  <div class="ingestion-modal-padding">
+    <label class="padding-left-10">Already Configured</label>
+  </div>
+
+</div>
+<div data-ng-if="widgetCompleted" class="ingestion-modal-footer"></div>
+<form data-ng-if="!widgetCompleted" name="solutionpackWizardForm">
+  <wizard on-finish="finished()" indicators-position="top" class="cs-wizard ingestion-steps solutionpack-wizard-steps"
+    name="solutionpackWizard" data-ng-class="{'step-indicator-disabled': disableCompletedSteps}">
+    <!-- Start -->
+    <wz-step wz-title="Start" wz-order="currentStepNumber" class="ingestion-modal-padding wizard-first-step">
+      <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
+        <div class="full-height overflow-auto">
+          <div class="display-table fixed-table-layout full-height full-width">
+            <div class="full-height display-table-cell vertical-align-middle">
+              <div class="col-md-6 display-flex align-items-center margin-top-20 padding-0">
+                <div class="full-width">
+                  <img class="img-responsive d-info-image" src="images/solutionpack_add_{{$ctrl.currentTheme}}.png">
+                </div>
+              </div>
+              <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
+                <div class="font-size-40 line-height-1">CICD Configuration</div><br />
+                <div class="padding-right-30 margin-top-sm max-width-450px">
+                  <p class="font-size-14 margin-bottom-0">This wizard will configure the FortiSOAR environment for CICD solution pack.
+                    The wizard have multi-picklist, user have to select whether the FortiSOAR environment is Production or Development or act as production and development server.</p><br />
+                  <p class="font-size-14 margin-bottom-0">You can select the FortiSOAR environment now by clicking next button or close this wizard and setup  FortiSOAR environment by clicking Setup button on CICD solution pack.</p>
+                </div>
+                <button type="button" class="btn btn-primary btn-sm margin-top-xlg text-transform-none font-size-14"
+                  data-ng-click="moveNext()" id="solutionpack-next-btn">Next<i
+                    class="fa fa-chevron-right margin-left-sm"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ingestion-modal-footer"></div>
+    </wz-step>
+    <wz-step wz-title="configure" wz-order="currentStepNumber" class="ingestion-modal-padding">
+      <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
+        <div class="full-height overflow-auto">
+          <form data-ng-if="$ctrl.mode !== 'clone'" name="ewlInfoForm" novalidate>
+            <div class="row">
+              <h6 class="col-md-9 margin-l margin-left-18 margin-top-10per modal-title">Select the FortiSOAR Environment</h6>
+              <div class="col-md-4">
+                <div data-ng-if="!processing" class="cs-select margin-bottom-80 margin-left-15">
+                  <ui-select name="select_env" id="select_env" data-ng-model="config.picklist" data-ng-required="true"
+                    multiple class="custom-multi-select" append-to-body="false">
+                    <ui-select-match placeholder="Select Environment...">{{$item.itemValue}}
+                    </ui-select-match>
+                    <ui-select-choices
+                      repeat="field in pickListField.options | filter: $select.search | orderBy: 'name'"
+                      refresh-delay="200" ng-show="($select.items.length > 0) ||">
+                      <div ng-bind-html="field.itemValue | highlight: $select.search"></div>
+                    </ui-select-choices>
+                  </ui-select>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="ingestion-modal-footer">
+        <button type="button" class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg"
+          id="solutionpack-configure-back-btn" data-ng-click="movePrevious()"><i
+            class="fa fa-chevron-left margin-right-sm"></i> Back</button>
+        <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg" data-ng-click="finish()" data-ng-disabled="config.picklist.length > 0  && envCompleted"
+          id="solutionpack-configure-finish-btn">Finish<i class="fa fa-chevron-right margin-left-sm"></i>
+        </button>
+        
+      </div>
+    </wz-step>
+  </wizard>
+</form>
