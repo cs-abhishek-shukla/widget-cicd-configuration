@@ -1,25 +1,18 @@
 <div class="modal-header">
   <h3 class="modal-title col-md-9">CICD Configuration</h3>
 </div>
-<div data-ng-if="widgetCompleted" class="cs-wizard ingestion-steps">
-  <div class="ingestion-modal-padding">
-    <label class="padding-left-10">Already Configured</label>
-  </div>
-
-</div>
-<div data-ng-if="widgetCompleted" class="ingestion-modal-footer"></div>
-<form data-ng-if="!widgetCompleted" name="solutionpackWizardForm">
-  <wizard on-finish="finished()" indicators-position="top" class="cs-wizard ingestion-steps solutionpack-wizard-steps"
-    name="solutionpackWizard" data-ng-class="{'step-indicator-disabled': disableCompletedSteps}">
+<form name="solutionpackWizardForm">
+  <wizard on-finish="finish()" indicators-position="top" class="cs-wizard ingestion-steps solutionpack-wizard-steps"
+    name="solutionpackWizard">
     <!-- Start -->
-    <wz-step wz-title="Start" wz-order="currentStepNumber" class="ingestion-modal-padding wizard-first-step">
+    <wz-step wz-title="Start" wz-order="1" class="ingestion-modal-padding wizard-first-step">
       <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
         <div class="full-height overflow-auto">
           <div class="display-table fixed-table-layout full-height full-width">
             <div class="full-height display-table-cell vertical-align-middle">
               <div class="col-md-6 display-flex align-items-center margin-top-20 padding-0">
                 <div class="full-width">
-                  <img class="img-responsive d-info-image" src="images/solutionpack_add_{{$ctrl.currentTheme}}.png">
+                  <!-- img class="img-responsive d-info-image" src="images/solutionpack_add_{{currentTheme}}.png"> -->
                 </div>
               </div>
               <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
@@ -37,12 +30,10 @@
           </div>
         </div>
       </div>
-      <div class="ingestion-modal-footer"></div>
     </wz-step>
-    <wz-step wz-title="configure" wz-order="currentStepNumber" class="ingestion-modal-padding">
+    <wz-step wz-title="configure" wz-order="2" class="ingestion-modal-padding">
       <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
         <div class="full-height overflow-auto">
-          <form data-ng-if="$ctrl.mode !== 'clone'" name="ewlInfoForm" novalidate>
             <div class="row">
               <h6 class="col-md-9 margin-l margin-left-18 margin-top-10per modal-title">Select the FortiSOAR Environment</h6>
               <div class="col-md-4">
@@ -60,7 +51,6 @@
                 </div>
               </div>
             </div>
-          </form>
         </div>
       </div>
       <div class="ingestion-modal-footer">

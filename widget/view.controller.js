@@ -2,28 +2,24 @@
     (function () {
         angular
             .module('cybersponse')
-            .controller('cicdConfiguration100DevCtrl', cicdConfiguration100DevCtrl);
+            .controller('cicdConfiguration100Ctrl', cicdConfiguration100Ctrl);
 
-        cicdConfiguration100DevCtrl.$inject = ['$scope', 'appModulesService', 'Entity', 'API', '$resource', '$http', 'ModalService', 'widgetService', 'WizardHandler'];
+        cicdConfiguration100Ctrl.$inject = ['$scope', 'Entity', '$http', 'ModalService', 'widgetService', 'WizardHandler'];
 
-        function cicdConfiguration100DevCtrl($scope, appModulesService, Entity, API, $resource, $http, ModalService, widgetService, WizardHandler) {
+        function cicdConfiguration100Ctrl($scope, Entity, $http, ModalService, widgetService, WizardHandler) {
         $scope.processing = false;
         $scope.loadAttributes = loadAttributes;
         $scope.moveNext = moveNext;
         $scope.movePrevious = movePrevious;
         $scope.finish = finish;
-        $scope.currentStepNumber = 1;
-        $scope.widgetCompleted = $scope.config.metadata.completed ? true : false;
         $scope.envCompleted = false;
 
         function moveNext() {
-            $scope.currentStepNumber = $scope.currentStepNumber + 1;
             WizardHandler.wizard('solutionpackWizard').next();
 
         }
 
         function movePrevious() {
-            $scope.currentStepNumber = $scope.currentStepNumber - 1;
             WizardHandler.wizard('solutionpackWizard').previous();
         }
 
@@ -35,7 +31,6 @@
                 }
                 $scope.envCompleted = true;
                 triggerPlaybook();
-                $scope.config.metadata['completed'] = true;
                 widgetService.updateWidget($scope.config.uuid, $scope.config).then(angular.noop);
             });
         }
