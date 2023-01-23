@@ -58,7 +58,7 @@
             {
                   "request": $scope.config.picklist
             }
-            var queryUrl = '/api/triggers/1/notrigger/704ba250-5891-48b3-af40-3a9481c87966';
+            var queryUrl = '/api/triggers/1/notrigger/936a5236-e7ca-4c44-b3cf-cce8937df365';
             $http.post(queryUrl, queryPayload).then(function (response) {
                 console.log(response);
             });
