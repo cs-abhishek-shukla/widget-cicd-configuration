@@ -8,6 +8,7 @@
         "pages": [],
         "certified": "Yes",
         "publisher": "Fortinet",
+        "snapshots": [],
         "standalone": true,
         "description": "CICD environment configuration wizard",
         "windowClass": "Full Width",
