@@ -2,28 +2,24 @@
   <h3 class="modal-title col-md-9">CICD Configuration</h3>
 </div>
 <form name="solutionpackWizardForm">
-  <wizard on-finish="finish()" indicators-position="top" class="cs-wizard ingestion-steps solutionpack-wizard-steps"
+  <wizard on-finish="close()" indicators-position="top" class="cs-wizard ingestion-steps solutionpack-wizard-steps"
     name="solutionpackWizard">
-    <!-- Start -->
     <wz-step wz-title="Start" wz-order="1" class="ingestion-modal-padding wizard-first-step">
       <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
         <div class="full-height overflow-auto">
           <div class="display-table fixed-table-layout full-height full-width">
             <div class="full-height display-table-cell vertical-align-middle">
-              <div class="col-md-6 display-flex align-items-center margin-top-20 padding-0">
-                <div class="full-width">
-                  <!-- img class="img-responsive d-info-image" src="images/solutionpack_add_{{currentTheme}}.png"> -->
-                </div>
+              <div class="col-md-6 display-flex align-items-center text-align-center">
+                  <img class="img-responsive" src="widgets/installed/cicdConfiguration-1.0.0/images/process.png">
               </div>
               <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
                 <div class="font-size-40 line-height-1">CICD Configuration</div><br />
                 <div class="padding-right-30 margin-top-sm max-width-450px">
-                  <p class="font-size-14 margin-bottom-0">This wizard will configure the FortiSOAR environment for CICD solution pack.
-                    The wizard have multi-picklist, user have to select whether the FortiSOAR environment is Production or Development or act as production and development server.</p><br />
-                  <p class="font-size-14 margin-bottom-0">You can select the FortiSOAR environment now by clicking next button or close this wizard and setup  FortiSOAR environment by clicking Setup button on CICD solution pack.</p>
+                  <p class="font-size-14 margin-bottom-0">This wizard will guide you through the initial configuration steps for getting your FortiSOAR environment ready for CICD. You will define whether this FortiSOAR instance is setup as a development environment for building new content; or the production environment where the reviewed and unit tested changes should be applied. </p><br />
+                  <p class="font-size-14 margin-bottom-0">The wizard will also help you connect your version control system to FortiSOAR.</p>
                 </div>
                 <button type="button" class="btn btn-primary btn-sm margin-top-xlg text-transform-none font-size-14"
-                  data-ng-click="moveNext()" id="solutionpack-next-btn">Next<i
+                  data-ng-click="moveNext()" id="solutionpack-next-btn">Let's get started!<i
                     class="fa fa-chevron-right margin-left-sm"></i></button>
               </div>
             </div>
@@ -31,36 +27,150 @@
         </div>
       </div>
     </wz-step>
-    <wz-step wz-title="configure" wz-order="2" class="ingestion-modal-padding">
+    <wz-step wz-title="Define Environment" wz-order="2" class="ingestion-modal-padding">
       <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
         <div class="full-height overflow-auto">
-            <div class="row">
-              <h6 class="col-md-9 margin-l margin-left-18 margin-top-10per modal-title">Select the FortiSOAR Environment</h6>
-              <div class="col-md-4">
-                <div data-ng-if="!processing" class="cs-select margin-bottom-80 margin-left-15">
-                  <ui-select name="select_env" id="select_env" data-ng-model="config.picklist" data-ng-required="true"
+            <div class="display-table fixed-table-layout full-height full-width">
+            <div class="full-height display-table-cell vertical-align-middle">
+              <div class="col-md-6 display-flex align-items-center margin-top-20">
+                <div class="full-width margin-left-20 padding-left-40">
+                  <img class="img-responsive step-image" src="widgets/installed/cicdConfiguration-1.0.0/images/environment.png">
+                </div>
+              </div>
+              <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
+              <div class="font-size-40 line-height-1">Define Your Environment</div><br/>
+              <div class="padding-right-30 margin-top-sm max-width-450px">
+                  <p class="font-size-14 margin-bottom-0">In order to see tasks and workflows relevant to the environment, you must specify whether the current FortiSOAR instance will be used as the Development or the Production environment.</p><br/>
+                  <p class="font-size-14 margin-bottom-0">You may select both if you have a single FortiSOAR environment</p><br />
+              </div>
+                <div data-ng-if="!processingPicklist" class="cs-select">
+                  <ui-select name="select_env" id="select_env" data-ng-model="selectedEnv.picklist" data-ng-required="true"
                     multiple class="custom-multi-select" append-to-body="false">
                     <ui-select-match placeholder="Select Environment...">{{$item.itemValue}}
                     </ui-select-match>
                     <ui-select-choices
-                      repeat="field in pickListField.options | filter: $select.search | orderBy: 'name'"
+                      repeat="field in picklistField.options | filter: $select.search | orderBy: 'name'"
                       refresh-delay="200" ng-show="($select.items.length > 0) ||">
                       <div ng-bind-html="field.itemValue | highlight: $select.search"></div>
                     </ui-select-choices>
                   </ui-select>
                 </div>
-              </div>
             </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="ingestion-modal-footer">
         <button type="button" class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg"
-          id="solutionpack-configure-back-btn" data-ng-click="movePrevious()"><i
-            class="fa fa-chevron-left margin-right-sm"></i> Back</button>
-        <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg" data-ng-click="finish()" data-ng-disabled="config.picklist.length > 0  && envCompleted"
-          id="solutionpack-configure-finish-btn">Finish<i class="fa fa-chevron-right margin-left-sm"></i>
+          id="solutionpack-configure-back-env-btn" data-ng-click="movePrevious()"><i class="fa fa-chevron-left margin-right-sm"></i>Back</button>
+        <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg" data-ng-click="moveEnvironmentNext()" data-ng-disabled="Object.keys(selectedEnv).length == 0 || selectedEnv.picklist.length === 0"
+          id="solutionpack-configure-env-next-btn">Next<i class="fa fa-chevron-right margin-left-sm"></i>
         </button>
         
+      </div>
+    </wz-step>
+    <wz-step wz-title="Connect Version Control" wz-order="2" class="ingestion-modal-padding">
+      <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
+        <div class="full-height overflow-auto">
+            <div class="display-table fixed-table-layout full-height full-width">
+            <div class="full-height display-table-cell vertical-align-middle">
+              <div class="col-md-6 display-flex align-items-center margin-top-20 margin-left-20">
+                <div class="full-width">
+                  <img class="img-responsive step-image" src="widgets/installed/cicdConfiguration-1.0.0/images/versionControl.png">
+                </div>
+              </div>
+              <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
+              <div class="font-size-40 line-height-1">Connector Your Version Control</div><br/>
+              <div class="padding-right-30 margin-top-sm max-width-450px">
+                  <p class="font-size-14 margin-bottom-0">Provide the default configuration to be used for all GitHub interactions.</p><br/>
+              </div>
+              <div class="margin-top-md padding-left-lg padding-right-lg overflow-auto query-section">
+                <div class="z-index-0" data-ng-if="!processingConnector">
+                  <span>
+                   <label class="control-label">Configuration Name</label>
+  <input class="form-control" data-ng-required="true" id="versionControlConfigInput" type="text" name="versionControlConfigName" data-ng-model="versionControlConnector.configName" autocomplete="off" placeholder="Default Configuration" data-enable-jinja="false">
+                  </span>
+                  <cs-connector-field-renderer data-cs-form="formHolder.connectorForm" data-enable-jinja="false" 
+                              data-json-fields="versionControlConnector.configFields" data-params="{}"
+                              data-connector-data="versionControlConnector">
+                  </cs-connector-field-renderer>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ingestion-modal-footer">
+        <button type="button" class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg" id="version-control-back-btn" data-ng-click="movePrevious()"><i class="fa fa-chevron-left margin-right-sm"></i>Back</button>
+        <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg" data-ng-click="moveVersionControlNext()" id="version-control-next-btn">Next<i class="fa fa-chevron-right margin-left-sm"></i>
+        </button>       
+      </div>
+    </wz-step>
+    <wz-step wz-title="Enable Code Snippets" wz-order="3" class="ingestion-modal-padding">
+      <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
+        <div class="full-height overflow-auto">
+            <div class="display-table fixed-table-layout full-height full-width">
+            <div class="full-height display-table-cell vertical-align-middle">
+              <div class="col-md-6 display-flex align-items-center margin-top-20 margin-left-20">
+                <div class="full-width">
+                  <img class="img-responsive step-image" src="widgets/installed/cicdConfiguration-1.0.0/images/versionControl.png">
+                </div>
+              </div>
+              <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
+              <div class="font-size-40 line-height-1">Enable the Code Snippet Integrations</div><br/>
+              <div class="padding-right-30 margin-top-sm max-width-450px">
+                  <p class="font-size-14 margin-bottom-0">Provide the default configuration to be used for all Code Snippets run as part of the CICD workflows.</p><br/>
+              </div>
+              <div class="margin-top-md padding-left-lg padding-right-lg overflow-auto query-section">
+                <div class="z-index-0" data-ng-if="!processingConnector">
+                  <span>
+                   <label class="control-label">Configuration Name</label>
+  <input class="form-control" data-ng-required="true" id="codeSnippetConfigInput" type="text" name="codeSnippetConnfigName" data-ng-model="codeSnippetConnector.configName" autocomplete="off" placeholder="Default Configuration" data-enable-jinja="false">
+                  </span>
+                  <cs-connector-field-renderer data-cs-form="formHolder.codeSnippetForm" data-enable-jinja="false" 
+                              data-json-fields="codeSnippetConnector.configFields" data-params="{}"
+                              data-connector-data="codeSnippetConnector">
+                  </cs-connector-field-renderer>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ingestion-modal-footer">
+        <button type="button" class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg"
+          id="code-snippet-back-btn" data-ng-click="movePrevious()"><i class="fa fa-chevron-left margin-right-sm"></i>Back</button>
+        <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg" data-ng-click="moveCodeSnippetNext()" id="code-snippet-next-btn">Next<i class="fa fa-chevron-right margin-left-sm"></i>
+        </button>
+        
+      </div>
+    </wz-step>
+    <wz-step wz-title="Finish" wz-order="4" class="ingestion-modal-padding wizard-first-step">
+      <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
+        <div class="full-height overflow-auto">
+          <div class="display-table fixed-table-layout full-height full-width">
+            <div class="full-height display-table-cell vertical-align-middle">
+              <div class="col-md-6 display-flex align-items-center text-align-center">
+                  <img class="img-responsive" src="widgets/installed/cicdConfiguration-1.0.0/images/process.png">
+              </div>
+              <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
+                <div class="font-size-40 line-height-1">You are all set!</div><br />
+                <div class="padding-right-30 margin-top-sm max-width-450px">
+                  <p class="font-size-14 margin-bottom-0">All prerequisites have been enabled successfully. </p><br />
+                  <p class="font-size-14 margin-bottom-0">You may now navigate to the 'Change Management' tab in the navigation and start using the solution.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ingestion-modal-footer">
+        <button type="button" class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg"
+          id="solutionpack-configure-back-btn" data-ng-click="movePrevious()"><i class="fa fa-chevron-left margin-right-sm"></i>Back</button>
+        <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg" data-ng-click="close()" id="solutionpack-configure-finish-btn">Finish<i class="fa fa-chevron-right margin-left-sm"></i>
+        </button>       
       </div>
     </wz-step>
   </wizard>
