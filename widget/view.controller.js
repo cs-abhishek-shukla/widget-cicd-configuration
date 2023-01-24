@@ -47,11 +47,11 @@
           connector_version: data.verion,
           config_id: data.config,
           id: data.configId,
-          default: false,
+          default: true,
           config: {}
         };
-        if(data.config_id){
-          newConfig = false;
+        if(data.config_id === null){
+          newConfig = true;
         }
         _saveValues(connector.configFields, data.config);
 
@@ -136,6 +136,7 @@
                }
            } else {
                connectorDetails.configuration = [];
+               connectorDetails.configId = null;
                connectorDetails.config = null;
                connectorDetails.configName = 'Default Configuration';
            }
