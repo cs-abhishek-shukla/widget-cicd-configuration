@@ -2,11 +2,11 @@
 (function () {
     angular
         .module('cybersponse')
-        .controller('cicdConfigurationPooja100DevCtrl', cicdConfigurationPooja100DevCtrl);
+        .controller('cicdConfiguration100Ctrl', cicdConfiguration100Ctrl);
 
-    cicdConfigurationPooja100DevCtrl.$inject = ['$scope', 'Entity', '$http', 'connectorService', 'WizardHandler', 'toaster', 'CommonUtils'];
+        cicdConfiguration100Ctrl.$inject = ['$scope', 'Entity', '$http', 'connectorService', 'WizardHandler', 'toaster', 'CommonUtils'];
 
-    function cicdConfigurationPooja100DevCtrl($scope, Entity, $http, connectorService, WizardHandler, toaster, CommonUtils) {
+    function cicdConfiguration100Ctrl($scope, Entity, $http, connectorService, WizardHandler, toaster, CommonUtils) {
     $scope.processingPicklist = false;
     $scope.processingConnector = false;
     $scope.envCompleted = false;
