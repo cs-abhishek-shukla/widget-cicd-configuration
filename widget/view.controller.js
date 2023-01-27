@@ -4,9 +4,9 @@
         .module('cybersponse')
         .controller('cicdConfiguration100Ctrl', cicdConfiguration100Ctrl);
 
-        cicdConfiguration100Ctrl.$inject = ['$scope', 'Entity', '$http', 'connectorService', 'WizardHandler', 'toaster', 'CommonUtils'];
+        cicdConfiguration100Ctrl.$inject = ['$q', 'API', '$resource', '$scope', 'Entity', '$http', 'connectorService', 'WizardHandler', 'toaster', 'CommonUtils'];
 
-    function cicdConfiguration100Ctrl($scope, Entity, $http, connectorService, WizardHandler, toaster, CommonUtils) {
+    function cicdConfiguration100Ctrl($q, API, $resource, $scope, Entity, $http, connectorService, WizardHandler, toaster, CommonUtils) {
     $scope.processingPicklist = false;
     $scope.processingConnector = false;
     $scope.envCompleted = false;
@@ -17,8 +17,23 @@
     $scope.moveVersionControlNext = moveVersionControlNext;
     $scope.versionControlConnectorName = 'github';
     $scope.connectorVersion = '100.9.9';
+    $scope.envMacro = "cicd_env";
     $scope.versionControlConnector = {};
     $scope.selectedEnv = {};
+      
+    function _loadDynamicVariable(variableName) {
+      var defer = $q.defer();
+      var dynamicVariable = null;
+      $resource(API.WORKFLOW + 'api/dynamic-variable/?offset=0&name='+variableName).get({}, function(data) {
+        if (data['hydra:member'].length > 0) {
+          dynamicVariable = data['hydra:member'][0].value;
+        }
+        defer.resolve(dynamicVariable);
+      }, function(response) {
+        defer.reject(response);
+      });
+      return defer.promise;
+    }
 
     function _saveValues(parameters, config) {
         angular.forEach(parameters, function(parameter) {
@@ -75,6 +90,11 @@
     }
 
     function moveNext() {
+        _loadDynamicVariable($scope.envMacro).then(function(dynamicVariable) {
+          if (dynamicVariable !== null ){
+            $scope.selectedEnv = {"picklist": JSON.parse(dynamicVariable)};
+          }
+        });
         WizardHandler.wizard('solutionpackWizard').next();
     }
       
