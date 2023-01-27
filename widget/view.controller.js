@@ -15,12 +15,9 @@
     $scope.movePrevious = movePrevious;
     $scope.moveEnvironmentNext = moveEnvironmentNext;
     $scope.moveVersionControlNext = moveVersionControlNext;
-    $scope.moveCodeSnippetNext = moveCodeSnippetNext;
     $scope.versionControlConnectorName = 'github';
     $scope.connectorVersion = '100.9.9';
-    $scope.codeSnippetConnectorName = 'code-snippet';
     $scope.versionControlConnector = {};
-    $scope.codeSnippetConnector = {};
     $scope.selectedEnv = {};
 
     function _saveValues(parameters, config) {
@@ -88,12 +85,6 @@
 
     function moveVersionControlNext() {
         _saveConnectorConfig($scope.versionControlConnector);
-        _loadConnectorDetails($scope.codeSnippetConnectorName, $scope.connectorVersion, $scope.codeSnippetConnector);
-        WizardHandler.wizard('solutionpackWizard').next();
-    }
-     
-    function moveCodeSnippetNext(){
-        _saveConnectorConfig($scope.codeSnippetConnector);
         WizardHandler.wizard('solutionpackWizard').next();
     }
 

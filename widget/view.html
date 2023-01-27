@@ -103,45 +103,7 @@
         </button>       
       </div>
     </wz-step>
-    <wz-step wz-title="Enable Code Snippets" wz-order="3" class="ingestion-modal-padding">
-      <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
-        <div class="full-height overflow-auto">
-            <div class="display-table fixed-table-layout full-height full-width">
-            <div class="full-height display-table-cell vertical-align-middle">
-              <div class="col-md-6 display-flex" style="justify-content: center">
-                  <img class="img-responsive step-image" src="widgets/installed/cicdConfiguration-1.0.0/images/codeSnippet.png">
-              </div>
-              <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
-              <div class="font-size-40 line-height-1">Enable the Code Snippet Integrations</div><br/>
-              <div class="padding-right-30 margin-top-sm max-width-450px">
-                  <p class="font-size-14 margin-bottom-0">Provide a default configuration to use for Code Snippets running as part of CICD workflows.</p><br/>
-              </div>
-              <div class="margin-top-md padding-left-lg padding-right-lg overflow-auto query-section">
-                <div class="z-index-0" data-ng-if="!processingConnector">
-                  <span>
-                   <label class="control-label">Configuration Name</label>
-  <input class="form-control" data-ng-required="true" id="codeSnippetConfigInput" type="text" name="codeSnippetConnfigName" data-ng-model="codeSnippetConnector.configName" autocomplete="off" placeholder="Default Configuration" data-enable-jinja="false">
-                  </span>
-                  <cs-connector-field-renderer data-cs-form="formHolder.codeSnippetForm" data-enable-jinja="false" 
-                              data-json-fields="codeSnippetConnector.configFields" data-params="{}"
-                              data-connector-data="codeSnippetConnector">
-                  </cs-connector-field-renderer>
-                </div>
-              </div>
-            </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ingestion-modal-footer">
-        <button type="button" class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg"
-          id="code-snippet-back-btn" data-ng-click="movePrevious()"><i class="fa fa-chevron-left margin-right-sm"></i>Back</button>
-        <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg" data-ng-click="moveCodeSnippetNext()" id="code-snippet-next-btn">Next<i class="fa fa-chevron-right margin-left-sm"></i>
-        </button>
-        
-      </div>
-    </wz-step>
-    <wz-step wz-title="Finish" wz-order="4" class="ingestion-modal-padding wizard-first-step">
+    <wz-step wz-title="Finish" wz-order="3" class="ingestion-modal-padding wizard-first-step">
       <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
         <div class="full-height overflow-auto">
           <div class="display-table fixed-table-layout full-height full-width">
