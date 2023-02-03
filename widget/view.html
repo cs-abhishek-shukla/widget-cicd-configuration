@@ -1,7 +1,8 @@
+<link rel="stylesheet" type="text/css" href="cicdConfiguration-1.0.0/style.css" />
 <div class="modal-header">
   <h3 class="modal-title col-md-9">CICD Configuration</h3>
 </div>
-<form name="solutionpackWizardForm">
+
   <wizard on-finish="close()" indicators-position="top" class="cs-wizard ingestion-steps solutionpack-wizard-steps"
     name="solutionpackWizard">
     <wz-step wz-title="Start" wz-order="1" class="ingestion-modal-padding wizard-first-step">
@@ -10,7 +11,7 @@
           <div class="display-table fixed-table-layout full-height full-width">
             <div class="full-height display-table-cell vertical-align-middle">
               <div class="col-md-6 display-flex" style="justify-content: center">
-                  <img class="img-responsive" src="widgets/installed/cicdConfiguration-1.0.0/images/process.png">
+                  <img class="img-responsive" src="widgets/installed/cicdConfiguration-1.0.0/images/process.png}">
               </div>
               <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
                 <div class="font-size-40 line-height-1">CICD Configuration</div><br />
@@ -67,7 +68,7 @@
         
       </div>
     </wz-step>
-    <wz-step wz-title="Connect Version Control" wz-order="2" class="ingestion-modal-padding">
+    <wz-step wz-title="Connect Version Control" wz-order="3" class="ingestion-modal-padding">
       <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
         <div class="full-height overflow-auto">
             <div class="display-table fixed-table-layout full-height full-width">
@@ -76,26 +77,20 @@
                   <img class="img-responsive step-image" src="widgets/installed/cicdConfiguration-1.0.0/images/versionControl.png">
               </div>
               <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
-              <div class="font-size-40 line-height-1">Connector Your Version Control</div><br/>
-              <div class="padding-right-30 margin-top-sm max-width-450px">
-                  <p class="font-size-14 margin-bottom-0">Provide a default configuration to use on all GitHub interactions.</p><br/>
-              </div>
-              <div class="margin-top-md padding-left-lg padding-right-lg overflow-auto query-section">
-                <div class="z-index-0" data-ng-if="!processingConnector">
-                  <span>
-                   <label class="control-label">Configuration Name</label>
-  <input class="form-control" data-ng-required="true" id="versionControlConfigInput" type="text" name="versionControlConfigName" data-ng-model="versionControlConnector.configName" autocomplete="off" placeholder="Default Configuration" data-enable-jinja="false">
-                  </span>
-                  <cs-connector-field-renderer data-cs-form="formHolder.connectorForm" data-enable-jinja="false" 
-                              data-json-fields="versionControlConnector.configFields" data-params="{}"
-                              data-connector-data="versionControlConnector">
-                  </cs-connector-field-renderer>
+                  <div class="font-size-40 line-height-1">Connector Your Version Control</div><br/>
+                  <div class="padding-right-30 margin-top-sm max-width-450px">
+                      <p class="font-size-14 margin-bottom-0">Review and add configurations to use for GitHub interactions.</p><br/>
+                  </div>
+                  <div data-ng-if="selectedConnector" class="margin-top-md padding-left-0 padding-right-0 connector-config-width" data-ng-include="'app/settings/connectorConfig.html'"> 
+			  </div>
+                <div data-ng-show="selectedConnector" class="col-md-12">
+                  <button type="button" class="btn btn-primary" data-ng-disabled="!(formHolder.connectorForm.$valid && formHolder.connectorForm.$dirty)" data-ng-click="saveConnector()" id="submit-github-config-add-btn"><i class="icon icon-check margin-right-sm"></i>Save</button>
+    <button type="button" class="btn btn-default" data-ng-disabled="processing" data-ng-click="closeConfiguration()" id="cancel-github-config-add-btn"><i class="icon icon-close margin-right-sm"></i>Cancel</button>
                 </div>
-              </div>
-            </div>
             </div>
           </div>
         </div>
+      </div>
       </div>
       <div class="ingestion-modal-footer">
         <button type="button" class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg" id="version-control-back-btn" data-ng-click="movePrevious()"><i class="fa fa-chevron-left margin-right-sm"></i>Back</button>
@@ -103,7 +98,7 @@
         </button>       
       </div>
     </wz-step>
-    <wz-step wz-title="Finish" wz-order="3" class="ingestion-modal-padding wizard-first-step">
+    <wz-step wz-title="Finish" wz-order="4" class="ingestion-modal-padding wizard-first-step">
       <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
         <div class="full-height overflow-auto">
           <div class="display-table fixed-table-layout full-height full-width">
@@ -130,4 +125,3 @@
       </div>
     </wz-step>
   </wizard>
-</form>

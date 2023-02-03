@@ -4,9 +4,14 @@
         .module('cybersponse')
         .controller('cicdConfiguration100Ctrl', cicdConfiguration100Ctrl);
 
-        cicdConfiguration100Ctrl.$inject = ['$q', 'API', '$resource', '$scope', 'Entity', '$http', 'connectorService', 'WizardHandler', 'toaster', 'CommonUtils'];
+        cicdConfiguration100Ctrl.$inject = ['$q', 'API', '$resource', '$scope', 'Entity', '$http', 'connectorService', 'currentPermissionsService', 
+        'WizardHandler', 'toaster', 'CommonUtils', '$controller', '$window'];
 
-    function cicdConfiguration100Ctrl($q, API, $resource, $scope, Entity, $http, connectorService, WizardHandler, toaster, CommonUtils) {
+    function cicdConfiguration100Ctrl($q, API, $resource, $scope, Entity, $http, connectorService, currentPermissionsService, 
+      WizardHandler, toaster, CommonUtils, $controller, $window) {
+    $controller('BaseConnectorCtrl', {
+      $scope: $scope
+    });
     $scope.processingPicklist = false;
     $scope.processingConnector = false;
     $scope.envCompleted = false;
@@ -20,6 +25,8 @@
     $scope.envMacro = "cicd_env";
     $scope.versionControlConnector = {};
     $scope.selectedEnv = {};
+    $scope.formHolder={};
+    $scope.saveConnector = saveConnector;
       
     function _loadDynamicVariable(variableName) {
       var defer = $q.defer();
@@ -34,54 +41,78 @@
       });
       return defer.promise;
     }
-
-    function _saveValues(parameters, config) {
-        angular.forEach(parameters, function(parameter) {
-            if (parameter.type == 'password'){
-                config[parameter.name] = CommonUtils.isUndefined(parameter.value) ? 'NULL' : parameter.value;
-            }
-            else {
-                config[parameter.name] = CommonUtils.isUndefined(parameter.value) ? '' : parameter.value;
-            }
-          if(parameter.parameters){//nested fields
-            _saveValues(parameter.parameters, config);
-          }
-        });
-    }
       
-    function _saveConnectorConfig(connector){
-        let newConfig = false;
-        let data = angular.copy(connector);
-        data = {
-          connector: data.id,
-          name: data.configName,
-          connector_name: data.name,
-          connector_version: data.verion,
-          config_id: data.config,
-          id: data.configId,
-          default: true,
-          config: {}
-        };
-        if(data.config_id === null){
-          newConfig = true;
-        }
-        _saveValues(connector.configFields, data.config);
+    function saveConnector(saveFrom) {
+      var data = angular.copy($scope.connector);
+      if(CommonUtils.isUndefined(data)) {
+        $scope.statusChanged = false;
+        return;
+      }
+      if(!currentPermissionsService.availablePermission('connectors', 'update')) {
+        $scope.statusChanged = false;
+        return;
+      }
 
-        connectorService.updateConnectorConfig(data, newConfig, false).then(function (response) {
-          if (newConfig) {
-              toaster.success({
-                  body: 'Configuration created successfully.'
-              });
-          } else if (!deleteConfig) {
-              toaster.success({
-                  body: 'Configuration updated successfully.'
-              });
+      var newConfiguration, newConfig, deleteConfig;
+      newConfiguration = false;
+      if(saveFrom !== 'deleteConfigAndSave'){
+        if (!_.isEmpty($scope.connector.config_schema)) {
+          if (!$scope.validateConfigurationForm()) {
+            return;
+          }
         }
-        }, function (error) {
-          toaster.error({
-            body: error.data.message ? error.data.message : error.data['hydra:description']
-           });
+        if(!$scope.input.selectedConfiguration.id){
+          newConfiguration = true;
+          $scope.input.selectedConfiguration.config_id = $window.UUID.generate();
+          if($scope.input.selectedConfiguration.default){
+            angular.forEach(data.configuration, function(configuration) {
+              if(configuration.config_id !== $scope.input.selectedConfiguration.config_id){
+                configuration.default = false;
+              }
+            });
+          }
+          data.configuration.push($scope.input.selectedConfiguration);
+          newConfig = $scope.input.selectedConfiguration;
+        }
+        delete data.newConfig;
+      }
+
+      if(saveFrom === 'deleteConfigAndSave') {
+        deleteConfig = true;
+      }
+
+      var updateData = {
+        connector: data.id,
+        name: $scope.input.selectedConfiguration.name,
+        config_id: $scope.input.selectedConfiguration.config_id,
+        id: $scope.input.selectedConfiguration.id,
+        default: $scope.input.selectedConfiguration.default,
+        config: {},
+        teams: $scope.input.selectedConfiguration.teams
+      };
+      $scope.saveValues($scope.input.selectedConfiguration.fields,updateData.config);
+      $scope.processing = true;
+      connectorService.updateConnectorConfig(updateData, newConfiguration, deleteConfig).then(function(response) {
+       if(newConfig){
+          $scope.connector.configuration.push(newConfig);
+          if(newConfig.default){
+            $scope.removeDefaultFromOthers();
+          }
+
+        }
+        $scope.formHolder.connectorForm.$setPristine();
+        if(!deleteConfig) {
+          $scope.input.selectedConfiguration.id = response.id;
+        }
+        $scope.checkHealth();
+        $scope.statusChanged = false;
+      }, function(error){
+        toaster.error({
+          body: error.data.message? error.data.message: error.data['hydra:description'] 
         });
+      }).finally(function(){
+        $scope.processing = false;
+    });
     }
       
     function close(){
@@ -95,6 +126,16 @@
             $scope.selectedEnv = {"picklist": JSON.parse(dynamicVariable)};
           }
         });
+        $scope.processingPicklist = true;
+        var entity = new Entity('change_management');
+        entity.loadFields().then(function () {
+            for (var key in entity.fields) {
+                if (entity.fields[key].type === 'picklist' && key === 'environment') {
+                    $scope.picklistField = entity.fields.environment;
+                    $scope.processingPicklist = false;
+                }
+            }
+        });
         WizardHandler.wizard('solutionpackWizard').next();
     }
       
@@ -104,17 +145,11 @@
     }
 
     function moveVersionControlNext() {
-        _saveConnectorConfig($scope.versionControlConnector);
         WizardHandler.wizard('solutionpackWizard').next();
     }
 
     function movePrevious() {
         WizardHandler.wizard('solutionpackWizard').previous();
-    }
-
-    function _init() {
-        $scope.config = {};
-        _loadAttributes();
     }
 
     function _loadConnectorDetails(connectorName, connectorVersion, connectorDetails){
@@ -126,47 +161,10 @@
             });
              return;
            }
-           connectorDetails.version  = connector.version;
-           connectorDetails.configFields = connector.config_schema.fields;
-           connectorDetails.name = connector.name;
-           connectorDetails.id = connector.id;
-           if (connector.configuration.length > 0) {
-               var defaultConfig = _.find(connector.configuration, function (config) {
-                  return config.default;
-               });
-               if (defaultConfig) {
-                 connectorDetails.configuration = defaultConfig;
-                 connectorDetails.configId = defaultConfig.id;
-                 connectorDetails.config = defaultConfig.config_id;
-                 connectorDetails.configName = defaultConfig.name;
-               } else {
-                 connectorDetails.configuration = connector.configuration[0];
-                 connectorDetails.configId = connector.configuration[0].id;
-                 connectorDetails.config = connector.configuration[0].config_id;
-                 connectorDetails.configName = connector.configuration[0].name;
-               }
-           } else {
-               connectorDetails.configuration = [];
-               connectorDetails.configId = null;
-               connectorDetails.config = null;
-               connectorDetails.configName = 'Default Configuration';
-           }
+           $scope.selectedConnector = connector;
+           $scope.loadConnector($scope.selectedConnector, false, false);
            $scope.processingConnector = false;
         });
-    }
-      
-    function _loadAttributes() {
-        $scope.processingPicklist = true;
-        var entity = new Entity('change_management');
-        entity.loadFields().then(function () {
-            for (var key in entity.fields) {
-                if (entity.fields[key].type === 'picklist' && key === 'environment') {
-                    $scope.picklistField = entity.fields.environment;
-                    $scope.processingPicklist = false;
-                }
-            }
-        });
-        console.log('fetched picklist details');
     }
       
     function triggerPlaybook() {
@@ -179,7 +177,5 @@
             console.log(response);
         });
     }
-    
-    _init();
 }
 })();
