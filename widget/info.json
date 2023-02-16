@@ -1,7 +1,7 @@
 {
     "name": "cicdConfiguration",
     "version": "1.0.0",
-    "title": "CICD Configuration",
+    "title": "CICD Configuration Wizard",
     "subTitle": "CICD Configuration Wizard",
     "published_date": "1658838600",
     "metadata": {
@@ -10,7 +10,7 @@
         "publisher": "Fortinet",
         "snapshots": [],
         "standalone": true,
-        "description": "CICD environment configuration wizard",
+        "description": "CICD Configuration Wizard will configure the FortiSOAR environments as Development, Staging or Production",
         "windowClass": "Full Width",
         "compatibility": [
             "7.3.1"
