@@ -2,7 +2,7 @@
     "name": "cicdConfiguration",
     "version": "1.0.0",
     "title": "CICD Configuration Wizard",
-    "subTitle": "CICD Configuration Wizard",
+    "subTitle": "CICD Configuration Wizard will configure the FortiSOAR environments as Development, Staging or Production",
     "published_date": "1658838600",
     "metadata": {
         "pages": [],
