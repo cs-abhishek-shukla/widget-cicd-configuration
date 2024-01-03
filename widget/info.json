@@ -1,0 +1,20 @@
+{
+    "name": "cicdConfiguration",
+    "version": "1.0.0",
+    "title": "CICD Configuration Wizard",
+    "subTitle": "CICD Configuration Wizard will configure the FortiSOAR environments as Development, Staging or Production",
+    "published_date": "1658838600",
+    "metadata": {
+        "pages": [],
+        "certified": "Yes",
+        "publisher": "Fortinet",
+        "snapshots": [],
+        "standalone": true,
+        "help_online": "https:\/\/github.com\/fortinet-fortisoar\/widget-cicd-configuration\/blob\/release\/1.0.0\/README.md",
+        "description": "CICD Configuration Wizard will configure the FortiSOAR environments as Development, Staging or Production",
+        "windowClass": "Full Width",
+        "compatibility": [
+            "7.3.1"
+        ]
+    }
+}
