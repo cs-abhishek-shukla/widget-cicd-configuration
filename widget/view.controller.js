@@ -94,7 +94,7 @@
 
       if (saveFrom === 'deleteConfigAndSave') {
         deleteConfig = true;
-        $scope.connectorHealth = false;
+        $scope.isConnectorHealthy = false;
       }
 
       var updateData = {
@@ -120,7 +120,7 @@
         if (!deleteConfig) {
           $scope.input.selectedConfiguration.id = response.id;
           $scope.configuredConnector = true;
-          $scope.connectorHealth = true;
+          $scope.isConnectorHealthy = true;
         }
         $scope.checkHealth();
         $scope.statusChanged = false;
@@ -193,19 +193,19 @@
     function _loadConnectorDetails(connectorName, connectorVersion, sourceControl) {
       $scope.processingConnector = true;
       $scope.configuredConnector = false;
-      $scope.connectorHealth = false;
+      $scope.isConnectorHealthy = false;
       connectorService.getConnector(connectorName, connectorVersion).then(function (connector) {
         marketplaceService.getContentDetails(API.BASE + 'solutionpacks/' + sourceControl.uuid + '?$relationships=true').then(function (response) {
           $scope.contentDetail = response.data;
           connectorService.getConnectorHealth(response.data, connector.configuration[0].config_id, connector.configuration[0].agent).then(function (data) {
             if (data.status === "Available") {
-              $scope.connectorHealth = true;
+              $scope.isConnectorHealthy = true;
             }
           });
         });
         if (!connector) {
           toaster.error({
-            body: 'The Connector "' + connectorName + '" is not installed. Istall the connector and re-run thiz wizard to complete the configuration'
+            body: 'The Connector "' + connectorName + '" is not installed. Install the connector and re-run this wizard to complete the configuration'
           });
           return;
         }

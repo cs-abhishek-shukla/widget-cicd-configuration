@@ -267,8 +267,8 @@
                       data-ng-class="{'completed' : configuredEnv.sourceControl.length !== 0}"></i>Selected Source
                     Control is {{configuredEnv.sourceControl.label}}</p>
                   <p><i class="completed icon icon-approval margin-right-md"></i>
-                    <span data-ng-if="connectorHealth">{{configuredEnv.sourceControl.label}} Connector Configured</span>
-                    <span data-ng-if="!connectorHealth">{{configuredEnv.sourceControl.label}} Connector is not
+                    <span data-ng-if="isConnectorHealthy">{{configuredEnv.sourceControl.label}} Connector Configured</span>
+                    <span data-ng-if="!isConnectorHealthy">{{configuredEnv.sourceControl.label}} Connector is not
                       Configured</span>
                   </p>
                 </div>
