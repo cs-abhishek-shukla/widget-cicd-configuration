@@ -19,16 +19,29 @@
     $scope.moveEnvPrevious = moveEnvPrevious;
     $scope.moveEnvironmentNext = moveEnvironmentNext;
     $scope.moveVersionControlNext = moveVersionControlNext;
-    $scope.moveNextWithoutSouruceContol = moveNextWithoutSouruceContol;
     $scope.moveSourceControlNext = moveSourceControlNext;
+    $scope.saveConnector = saveConnector;
     $scope.envMacro = "cicd_env";
     $scope.formHolder = {};
-    $scope.saveConnector = saveConnector;
     $scope.configuredEnv = {
-      sourceControl: [],
-      selectedEnv: []
+      sourceControl: {},
+      selectedEnv: {}
     };
 
+    $scope.onEnvSelect = function ($item) {
+      $scope.processingPicklist = true;
+    };
+    
+    $scope.onEnvRemove = function ($item) {
+      if($scope.configuredEnv.selectedEnv.picklist.length === 0){
+        $scope.processingPicklist = false;
+      }
+    };
+
+    $scope.onSourceControlSelect = function () {
+      $scope.selectedSourceControl = true;
+    };
+    
     function _loadDynamicVariable(variableName) {
       var defer = $q.defer();
       var dynamicVariable = null;
@@ -121,23 +134,24 @@
     }
 
     function close() {
-      triggerPlaybook();
       $scope.$parent.$parent.$parent.$ctrl.handleClose();
     }
 
     function moveNext() {
+      $scope.processingPicklist = false;
       _loadDynamicVariable($scope.envMacro).then(function (dynamicVariable) {
         if (dynamicVariable !== null) {
-          $scope.selectedEnv = { "picklist": JSON.parse(dynamicVariable) };
+          var jsonDynamicVariable = JSON.parse(dynamicVariable);
+          var envType = jsonDynamicVariable.env_config;
+          $scope.configuredEnv.selectedEnv = { "picklist": envType };
+           $scope.processingPicklist = true;
         }
       });
-      $scope.processingPicklist = true;
       var entity = new Entity('change_management');
       entity.loadFields().then(function () {
         for (var key in entity.fields) {
           if (entity.fields[key].type === 'picklist' && key === 'environment') {
             $scope.picklistField = entity.fields.environment;
-            $scope.processingPicklist = false;
           }
         }
       });
@@ -150,14 +164,21 @@
     }
 
     function moveSourceControlNext() {
-      WizardHandler.wizard('solutionpackWizard').next();
-    }
-
-    function moveNextWithoutSouruceContol() {
+      $scope.selectedSourceControl = false;
+      _loadDynamicVariable($scope.envMacro).then(function (dynamicVariable) {
+        if (dynamicVariable !== null) {
+          var jsonDynamicVariable = JSON.parse(dynamicVariable);
+          var source_control = jsonDynamicVariable.source_control;
+          $scope.defaultSourceControl = source_control;
+          $scope.configuredEnv.sourceControl = $scope.defaultSourceControl;
+          $scope.selectedSourceControl = true;
+        }
+      });
       WizardHandler.wizard('solutionpackWizard').next();
     }
 
     function moveVersionControlNext() {
+      triggerPlaybook();
       WizardHandler.wizard('solutionpackWizard').next();
     }
 

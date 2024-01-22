@@ -49,8 +49,9 @@
                 <p class="font-size-14 margin-bottom-0">You may select both if you have a single FortiSOAR environment
                 </p><br />
               </div>
-              <div data-ng-if="!processingPicklist" class="cs-select">
-                <ui-select name="select_env" id="select_env" data-ng-model="configuredEnv.selectedEnv"
+              <div class="cs-select">
+                <ui-select name="select_env" id="select_env" on-select="onEnvSelect($item)"
+                  on-remove="onEnvRemove($item)" data-ng-model="configuredEnv.selectedEnv.picklist"
                   data-ng-required="true" multiple class="custom-multi-select" append-to-body="false">
                   <ui-select-match placeholder="Select Environment...">{{$item.itemValue}}
                   </ui-select-match>
@@ -70,9 +71,8 @@
         id="solutionpack-configure-back-start-btn" data-ng-click="movePrevious()"><i
           class="fa fa-chevron-left margin-right-sm"></i>Back</button>
       <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg"
-        data-ng-click="moveSourceControlNext()"
-        data-ng-disabled="(configuredEnv.selectedEnv && configuredEnv.selectedEnv.length === 0) || (configuredEnv.selectedEnv && configuredEnv.selectedEnv.picklist.length === 0)"
-        id="solutionpack-configure-source-control-next-btn">Next<i class="fa fa-chevron-right margin-left-sm"></i>
+        data-ng-click="moveSourceControlNext()" id="solutionpack-configure-source-control-next-btn"
+        data-ng-disabled="processingPicklist===false">Next<i class="fa fa-chevron-right margin-left-sm"></i>
       </button>
     </div>
   </wz-step>
@@ -95,9 +95,9 @@
                 </p><br />
               </div>
               <div class="cs-select">
-                <select id="select_source_control" name="select_source_control"
+                <select id="select_source_control" name="select_source_control" data-ng-change="onSourceControlSelect()"
                   data-ng-model="configuredEnv.sourceControl" class="form-control"
-                  data-ng-options="field.label for field in sourceControls | filter: $select.search | orderBy: 'name'"
+                  data-ng-options="field as field.label for field in sourceControls | filter: $select.search | orderBy: 'name' track by field.uuid"
                   aria-invalid="false">
                 </select><span class="fa fa-sort-desc"></span>
               </div>
@@ -112,8 +112,7 @@
           class="fa fa-chevron-left margin-right-sm"></i>Back</button>
       <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg"
         data-ng-click="moveEnvironmentNext()" id="solutionpack-configure-env-next-btn"
-        data-ng-disabled="(configuredEnv.sourceControl && configuredEnv.sourceControl.length === 0) || (configuredEnv.picklist && configuredEnv.picklist.length === 0)">Next<i
-          class="fa fa-chevron-right margin-left-sm"></i>
+        data-ng-disabled="selectedSourceControl===false">Next<i class="fa fa-chevron-right margin-left-sm"></i>
       </button>
     </div>
   </wz-step>
@@ -229,8 +228,8 @@
         id="version-control-back-btn" data-ng-click="movePrevious()"><i
           class="fa fa-chevron-left margin-right-sm"></i>Back</button>
       <button type="button" class="btn btn-default pull-right btn-sm margin-top-lg margin-right-lg text-tranformtion"
-        id="skip-source-control-btn" data-ng-disabled="configuredConnector"
-        data-ng-click="moveNextWithoutSouruceContol()"> Skip
+        id="skip-source-control-btn" data-ng-disabled="configuredConnector" data-ng-click="moveVersionControlNext()">
+        Skip
         <i class="fa fa-chevron-right margin-left-sm"></i></button>
       <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg"
         data-ng-disabled="!configuredConnector" data-ng-click="moveVersionControlNext()"
@@ -258,15 +257,15 @@
                   <h6 class="font-weight-normal margin-bottom-sm modal-title text-transform-none">Quick Summary</h6>
                   <p><i class="completed icon icon-approval margin-right-md"
                       data-ng-class="{'completed' : configuredEnv.selectedEnv.length !== 0}"></i>
-                    <span data-ng-if="configuredEnv.selectedEnv.length === 2">Current FortiSOAR instance is
-                      {{configuredEnv.selectedEnv[0].itemValue}} and {{configuredEnv.selectedEnv[1].itemValue}}</span>
-                    <span data-ng-if="configuredEnv.selectedEnv.length === 1">Current FortiSOAR instance is
-                      {{configuredEnv.selectedEnv[0].itemValue}}</span>
+                    <span data-ng-if="configuredEnv.selectedEnv.picklist.length === 2">Current FortiSOAR instance is
+                      {{configuredEnv.selectedEnv.picklist[0].itemValue}} and
+                      {{configuredEnv.selectedEnv.picklist[1].itemValue}}</span>
+                    <span data-ng-if="configuredEnv.selectedEnv.picklist.length === 1">Current FortiSOAR instance is
+                      {{configuredEnv.selectedEnv.picklist[0].itemValue}}</span>
                   </p>
                   <p><i class="completed icon icon-approval margin-right-md"
                       data-ng-class="{'completed' : configuredEnv.sourceControl.length !== 0}"></i>Selected Source
-                    Control is
-                    {{configuredEnv.sourceControl.label}}</p>
+                    Control is {{configuredEnv.sourceControl.label}}</p>
                   <p><i class="completed icon icon-approval margin-right-md"></i>
                     <span data-ng-if="connectorHealth">{{configuredEnv.sourceControl.label}} Connector Configured</span>
                     <span data-ng-if="!connectorHealth">{{configuredEnv.sourceControl.label}} Connector is not
