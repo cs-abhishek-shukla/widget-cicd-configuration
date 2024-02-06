@@ -249,7 +249,7 @@
           ]
         };
         $resource(API.QUERY + 'solutionpacks').save({ $limit: ALL_RECORDS_SIZE }, queryBody).$promise.then(function (response) {
-          if (response['hydra:member'].length > 0 || response['hydra:member']) {
+          if (response['hydra:member'] || response['hydra:member'].length > 0 ) {
             $scope.sourceControls = _.map(response['hydra:member'], obj => _.pick(obj, ['name', 'label', 'version', 'uuid'])
             );
           }
