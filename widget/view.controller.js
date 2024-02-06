@@ -35,9 +35,9 @@
     $scope.onEnvSelect = function ($item) {
       $scope.processingPicklist = true;
     };
-    
+
     $scope.onEnvRemove = function ($item) {
-      if($scope.configuredEnv.selectedEnv.picklist.length === 0){
+      if ($scope.configuredEnv.selectedEnv.picklist.length === 0) {
         $scope.processingPicklist = false;
       }
     };
@@ -45,7 +45,7 @@
     $scope.onSourceControlSelect = function () {
       $scope.selectedSourceControl = true;
     };
-    
+
     function _loadDynamicVariable(variableName) {
       var defer = $q.defer();
       var dynamicVariable = null;
@@ -148,7 +148,7 @@
           var jsonDynamicVariable = JSON.parse(dynamicVariable);
           var envType = jsonDynamicVariable.env_config;
           $scope.configuredEnv.selectedEnv = { "picklist": envType };
-           $scope.processingPicklist = true;
+          $scope.processingPicklist = true;
         }
       });
       var entity = new Entity('change_management');
@@ -230,26 +230,30 @@
       });
     }
     function _init() {
-      var queryBody = {
-        "logic": "AND",
-        "filters": [
-          {
-            "field": "category",
-            "operator": "in",
-            "value": [
-              "/api/3/picklists/2f34f73f-9a4d-4c23-8ce3-d078e08b0305"
-            ]
-          }
-        ]
-      };
       var queryString = {
-        $limit: ALL_RECORDS_SIZE
+        $limit: ALL_RECORDS_SIZE,
+        name: 'Solution Pack Category'
       };
-      return $resource(API.QUERY + 'solutionpacks').save(queryString, queryBody).$promise.then(function (response) {
-        if (response['hydra:member'].length > 0 || response['hydra:member']) {
-          $scope.sourceControls = _.map(response['hydra:member'], obj => _.pick(obj, ['name', 'label', 'version', 'uuid'])
-          );
-        }
+      $resource(API.BASE + 'picklist_names').get(queryString).$promise.then(function (response) {
+        var sourceCodeManagementPicklist = _.find(response['hydra:member'][0].picklists, { itemValue: 'Source Code Management' });
+        var queryBody = {
+          "logic": "AND",
+          "filters": [
+            {
+              "field": "category",
+              "operator": "in",
+              "value": [
+                sourceCodeManagementPicklist["@id"]
+              ]
+            }
+          ]
+        };
+        $resource(API.QUERY + 'solutionpacks').save({ $limit: ALL_RECORDS_SIZE }, queryBody).$promise.then(function (response) {
+          if (response['hydra:member'].length > 0 || response['hydra:member']) {
+            $scope.sourceControls = _.map(response['hydra:member'], obj => _.pick(obj, ['name', 'label', 'version', 'uuid'])
+            );
+          }
+        });
       });
     }
     _init();
