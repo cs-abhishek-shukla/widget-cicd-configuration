@@ -59,7 +59,7 @@
                   data-ng-required="true" multiple class="custom-multi-select" append-to-body="false">
                   <ui-select-match placeholder="Select Environment...">{{$item.itemValue}}
                   </ui-select-match>
-                  <ui-select-choices repeat="field in picklistField.options | filter: $select.search | orderBy: 'name'"
+                  <ui-select-choices repeat="field in picklistField | filter: $select.search | orderBy: 'name'"
                     refresh-delay="200" ng-show="$select.items.length >= 0 ||">
                     <div ng-bind-html="field.itemValue | highlight: $select.search"></div>
                   </ui-select-choices>
