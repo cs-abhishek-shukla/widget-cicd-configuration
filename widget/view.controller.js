@@ -155,7 +155,7 @@
       entity.loadFields().then(function () {
         for (var key in entity.fields) {
           if (entity.fields[key].type === 'picklist' && key === 'environment') {
-            $scope.picklistField = entity.fields.environment;
+            $scope.picklistField = _.reject(entity.fields.environment.options, obj => obj.itemValue === 'Undefined');
           }
         }
       });
