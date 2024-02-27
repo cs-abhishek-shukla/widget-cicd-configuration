@@ -26,12 +26,13 @@
     $scope.moveSourceControlNext = moveSourceControlNext;
     $scope.saveConnector = saveConnector;
     $scope.envMacro = "cicd_env";
+    $scope.addedBaseURL = false;
     $scope.formHolder = {};
     $scope.configuredEnv = {
       sourceControl: {},
-      selectedEnv: {}
+      selectedEnv: {},
+      sourceControlBaseURL: undefined
     };
-
     $scope.onEnvSelect = function ($item) {
       $scope.processingPicklist = true;
     };
@@ -39,6 +40,15 @@
     $scope.onEnvRemove = function ($item) {
       if ($scope.configuredEnv.selectedEnv.picklist.length === 0) {
         $scope.processingPicklist = false;
+      }
+    };
+
+    $scope.onAddBaseURL = function () {
+      if ($scope.configuredEnv.sourceControlBaseURL) {
+        $scope.addedBaseURL = true;
+      }
+      else {
+        $scope.addedBaseURL = false;
       }
     };
 
@@ -163,6 +173,7 @@
     }
 
     function moveEnvironmentNext() {
+      $scope.configuredEnv.sourceControl['baseURL'] = $scope.configuredEnv.sourceControlBaseURL;
       _loadConnectorDetails($scope.configuredEnv.sourceControl.name, $scope.configuredEnv.sourceControl.version, $scope.configuredEnv.sourceControl);
       WizardHandler.wizard('solutionpackWizard').next();
     }
@@ -249,7 +260,7 @@
           ]
         };
         $resource(API.QUERY + 'solutionpacks').save({ $limit: ALL_RECORDS_SIZE }, queryBody).$promise.then(function (response) {
-          if (response['hydra:member'] || response['hydra:member'].length > 0 ) {
+          if (response['hydra:member'] || response['hydra:member'].length > 0) {
             $scope.sourceControls = _.map(response['hydra:member'], obj => _.pick(obj, ['name', 'label', 'version', 'uuid'])
             );
           }
