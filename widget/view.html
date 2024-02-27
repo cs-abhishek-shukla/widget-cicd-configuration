@@ -50,8 +50,9 @@
               <div class="padding-right-30 margin-top-sm max-width-450px">
                 <p class="font-size-14 margin-bottom-0">To see tasks and workflows relevant to the environment, specify
                   whether the current FortiSOAR instance is a Development or a Production environment.</p><br />
-                <p class="font-size-14 margin-bottom-0">You may select both if you have a single FortiSOAR environment
-                </p><br />
+                <p class="font-size-14 margin-bottom-0 padding-bottom-8">You may select both if you have a single
+                  FortiSOAR environment
+                </p>
               </div>
               <div class="cs-select">
                 <ui-select name="select_env" id="select_env" on-select="onEnvSelect($item)"
@@ -95,8 +96,8 @@
                 <p class="font-size-14 margin-bottom-0">Please choose a source control system from the dropdown menu
                   below to proceed with the configuration. Source control is a crucial component for managing versioning
                   and facilitating continuous integration and deployment processes..</p><br />
-                <p class="font-size-14 margin-bottom-0">You may select single Source Control system
-                </p><br />
+                <p class="font-size-14 margin-bottom-0 padding-bottom-8">You may select single Source Control system
+                </p>
               </div>
               <div class="cs-select">
                 <select id="select_source_control" name="select_source_control" data-ng-change="onSourceControlSelect()"
@@ -104,6 +105,17 @@
                   data-ng-options="field as field.label for field in sourceControls | filter: $select.search | orderBy: 'name' track by field.uuid"
                   aria-invalid="false">
                 </select><span class="fa fa-sort-desc"></span>
+              </div>
+              <br />
+              <div class="form-group">
+                <label for="source-control-base-url" class="font-size-14 margin-bottom-0 padding-bottom-8">Enter Source
+                  Control Base URL<span class="text-danger">*</span></label>
+                <span
+                  data-uib-tooltip="Specify the web URL of the selected source control. For example, if you selected GitHub then specify https://github.com"
+                  data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
+                  </i></span>
+                <input id="source-control-base-url" name="source-control-base-url" type="text" class="form-control"
+                  data-ng-model="configuredEnv.sourceControlBaseURL" data-ng-change=onAddBaseURL()>
               </div>
             </div>
           </div>
@@ -116,7 +128,8 @@
           class="fa fa-chevron-left margin-right-sm"></i>Back</button>
       <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg"
         data-ng-click="moveEnvironmentNext()" id="solutionpack-configure-env-next-btn"
-        data-ng-disabled="selectedSourceControl===false">Next<i class="fa fa-chevron-right margin-left-sm"></i>
+        data-ng-disabled="selectedSourceControl===false || addedBaseURL===false">Next<i
+          class="fa fa-chevron-right margin-left-sm"></i>
       </button>
     </div>
   </wz-step>
@@ -271,7 +284,8 @@
                       data-ng-class="{'completed' : configuredEnv.sourceControl.length !== 0}"></i>Selected Source
                     Control is {{configuredEnv.sourceControl.label}}</p>
                   <p><i class="completed icon icon-approval margin-right-md"></i>
-                    <span data-ng-if="isConnectorHealthy">{{configuredEnv.sourceControl.label}} Connector Configured</span>
+                    <span data-ng-if="isConnectorHealthy">{{configuredEnv.sourceControl.label}} Connector
+                      Configured</span>
                     <span data-ng-if="!isConnectorHealthy">{{configuredEnv.sourceControl.label}} Connector is not
                       Configured</span>
                   </p>
