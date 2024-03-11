@@ -8,9 +8,9 @@
     .module('cybersponse')
     .controller('cicdConfiguration110Ctrl', cicdConfiguration110Ctrl);
 
-  cicdConfiguration110Ctrl.$inject = ['$q', 'API', '$resource', '$scope', 'Entity', '$http', 'connectorService', 'currentPermissionsService', 'WizardHandler', 'toaster', 'CommonUtils', '$controller', '$window', 'ALL_RECORDS_SIZE', '_', 'marketplaceService'];
+  cicdConfiguration110Ctrl.$inject = ['$q', 'API', '$resource', '$scope', 'Entity', '$http', 'connectorService', 'currentPermissionsService', 'WizardHandler', 'toaster', 'CommonUtils', '$controller', '$window', 'ALL_RECORDS_SIZE', '_', 'marketplaceService', '$state', '$timeout'];
 
-  function cicdConfiguration110Ctrl($q, API, $resource, $scope, Entity, $http, connectorService, currentPermissionsService, WizardHandler, toaster, CommonUtils, $controller, $window, ALL_RECORDS_SIZE, _, marketplaceService) {
+  function cicdConfiguration110Ctrl($q, API, $resource, $scope, Entity, $http, connectorService, currentPermissionsService, WizardHandler, toaster, CommonUtils, $controller, $window, ALL_RECORDS_SIZE, _, marketplaceService, $state, $timeout) {
     $controller('BaseConnectorCtrl', {
       $scope: $scope
     });
@@ -26,12 +26,10 @@
     $scope.moveSourceControlNext = moveSourceControlNext;
     $scope.saveConnector = saveConnector;
     $scope.envMacro = "cicd_env";
-    $scope.addedBaseURL = false;
     $scope.formHolder = {};
     $scope.configuredEnv = {
       sourceControl: {},
-      selectedEnv: {},
-      sourceControlBaseURL: undefined
+      selectedEnv: {}
     };
     $scope.onEnvSelect = function ($item) {
       $scope.processingPicklist = true;
@@ -40,15 +38,6 @@
     $scope.onEnvRemove = function ($item) {
       if ($scope.configuredEnv.selectedEnv.picklist.length === 0) {
         $scope.processingPicklist = false;
-      }
-    };
-
-    $scope.onAddBaseURL = function () {
-      if ($scope.configuredEnv.sourceControlBaseURL) {
-        $scope.addedBaseURL = true;
-      }
-      else {
-        $scope.addedBaseURL = false;
       }
     };
 
@@ -148,7 +137,8 @@
     }
 
     function close() {
-      $scope.$parent.$parent.$parent.$ctrl.handleClose();
+      $timeout(function () { $window.location.reload(); }, 3000);
+      $state.go('main.modules.list', { module: 'change_management' }, { reload: true });
     }
 
     function moveNext() {
@@ -173,7 +163,6 @@
     }
 
     function moveEnvironmentNext() {
-      $scope.configuredEnv.sourceControl['baseURL'] = $scope.configuredEnv.sourceControlBaseURL;
       _loadConnectorDetails($scope.configuredEnv.sourceControl.name, $scope.configuredEnv.sourceControl.version, $scope.configuredEnv.sourceControl);
       WizardHandler.wizard('solutionpackWizard').next();
     }
@@ -235,7 +224,7 @@
       {
         "request": $scope.configuredEnv
       }
-      var queryUrl = '/api/triggers/1/notrigger/936a5236-e7ca-4c44-b3cf-cce8937df365';
+      var queryUrl = API.MANUAL_TRIGGER + '936a5236-e7ca-4c44-b3cf-cce8937df365';
       $http.post(queryUrl, queryPayload).then(function (response) {
         console.log(response);
       });

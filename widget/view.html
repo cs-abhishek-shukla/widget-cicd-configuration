@@ -106,17 +106,6 @@
                   aria-invalid="false">
                 </select><span class="fa fa-sort-desc"></span>
               </div>
-              <br />
-              <div class="form-group">
-                <label for="source-control-base-url" class="font-size-14 margin-bottom-0 padding-bottom-8">Enter Source
-                  Control Base URL<span class="text-danger">*</span></label>
-                <span
-                  data-uib-tooltip="Specify the web URL of the selected source control. For example, if you selected GitHub then specify https://github.com"
-                  data-tooltip-append-to-body="true"><i class="margin-left-sm icon icon-information font-Size-13">
-                  </i></span>
-                <input id="source-control-base-url" name="source-control-base-url" type="text" class="form-control"
-                  data-ng-model="configuredEnv.sourceControlBaseURL" data-ng-change=onAddBaseURL()>
-              </div>
             </div>
           </div>
         </div>
@@ -128,8 +117,7 @@
           class="fa fa-chevron-left margin-right-sm"></i>Back</button>
       <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg"
         data-ng-click="moveEnvironmentNext()" id="solutionpack-configure-env-next-btn"
-        data-ng-disabled="selectedSourceControl===false || addedBaseURL===false">Next<i
-          class="fa fa-chevron-right margin-left-sm"></i>
+        data-ng-disabled="!selectedSourceControl">Next<i class="fa fa-chevron-right margin-left-sm"></i>
       </button>
     </div>
   </wz-step>
@@ -263,10 +251,11 @@
               <img class="img-responsive" src="widgets/installed/cicdConfiguration-1.1.0/images/finish.png">
             </div>
             <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
-              <div class="font-size-40 line-height-1">CICD Configuration Wizard Successfully Configured!!</div><br />
+              <div class="font-size-40 line-height-1">CICD Configuration Successfully Completed!!</div><br />
               <div class="padding-right-30 margin-top-sm">
                 <p class="font-size-14 margin-bottom-0">All prerequisites have been configured successfully.</p><br />
-                <p class="font-size-14 margin-bottom-0">You may now navigate to the 'Continuous Delivery' tab in the
+                <p class="font-size-14 margin-bottom-0">You may now navigate to the <a
+                    data-ng-click="close()">'Continuous Delivery'</a> tab in the
                   navigation and start using the solution.</p>
               </div>
               <div class="col-md-12 margin-top-lg padding-left-0">
