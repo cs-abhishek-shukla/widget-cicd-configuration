@@ -8,9 +8,9 @@
     .module('cybersponse')
     .controller('cicdConfiguration110Ctrl', cicdConfiguration110Ctrl);
 
-  cicdConfiguration110Ctrl.$inject = ['$q', 'API', '$resource', '$scope', 'Entity', '$http', 'connectorService', 'currentPermissionsService', 'WizardHandler', 'toaster', 'CommonUtils', '$controller', '$window', 'ALL_RECORDS_SIZE', '_', 'marketplaceService', '$state', '$timeout'];
+  cicdConfiguration110Ctrl.$inject = ['$q', 'API', '$resource', '$scope', 'Entity', '$http', 'connectorService', 'currentPermissionsService', 'WizardHandler', 'toaster', 'CommonUtils', '$controller', '$window', 'ALL_RECORDS_SIZE', '_', 'marketplaceService', '$state', '$timeout', '$rootScope', 'widgetBasePath'];
 
-  function cicdConfiguration110Ctrl($q, API, $resource, $scope, Entity, $http, connectorService, currentPermissionsService, WizardHandler, toaster, CommonUtils, $controller, $window, ALL_RECORDS_SIZE, _, marketplaceService, $state, $timeout) {
+  function cicdConfiguration110Ctrl($q, API, $resource, $scope, Entity, $http, connectorService, currentPermissionsService, WizardHandler, toaster, CommonUtils, $controller, $window, ALL_RECORDS_SIZE, _, marketplaceService, $state, $timeout, $rootScope, widgetBasePath) {
     $controller('BaseConnectorCtrl', {
       $scope: $scope
     });
@@ -24,6 +24,13 @@
     $scope.moveEnvironmentNext = moveEnvironmentNext;
     $scope.moveVersionControlNext = moveVersionControlNext;
     $scope.moveSourceControlNext = moveSourceControlNext;
+    $scope.isLightTheme = $rootScope.theme.id === 'light';
+    $scope.widgetBasePath = widgetBasePath;
+    $scope.startInfoGraphics = $scope.isLightTheme ? widgetBasePath +'images/start-light.png': widgetBasePath +'images/start-dark.png';
+    $scope.defineEnvironmentInfoGraphics = $scope.isLightTheme ? widgetBasePath +'images/define-environment-light.png': widgetBasePath +'images/define-environment-dark.png';
+    $scope.configureSourceControlInfoGraphics = $scope.isLightTheme ? widgetBasePath +'images/configure-source-control-light.png': widgetBasePath +'images/configure-source-control-dark.png';
+    $scope.selectSourceControlInfoGraphics = $scope.isLightTheme ? widgetBasePath +'images/select-source-control-light.png': widgetBasePath +'images/select-source-control-dark.png';
+    $scope.finishInfoGraphics = widgetBasePath +'images/finish.png';
     $scope.saveConnector = saveConnector;
     $scope.envMacro = "cicd_env";
     $scope.formHolder = {};
@@ -60,6 +67,7 @@
     }
 
     function saveConnector(saveFrom) {
+      $scope.isConnectorConfigured = true;
       $scope.configuredConnector = false;
       var data = angular.copy($scope.connector);
       if (CommonUtils.isUndefined(data)) {
@@ -96,6 +104,7 @@
       }
 
       if (saveFrom === 'deleteConfigAndSave') {
+        $scope.isConnectorConfigured = false;
         deleteConfig = true;
         $scope.isConnectorHealthy = false;
       }
@@ -201,11 +210,17 @@
       connectorService.getConnector(connectorName, connectorVersion).then(function (connector) {
         marketplaceService.getContentDetails(API.BASE + 'solutionpacks/' + sourceControl.uuid + '?$relationships=true').then(function (response) {
           $scope.contentDetail = response.data;
+          if(connector.configuration.length > 0){
+            $scope.isConnectorConfigured = true;
           connectorService.getConnectorHealth(response.data, connector.configuration[0].config_id, connector.configuration[0].agent).then(function (data) {
             if (data.status === "Available") {
               $scope.isConnectorHealthy = true;
             }
           });
+        }
+          else{
+            $scope.isConnectorConfigured = false;
+          }
         });
         if (!connector) {
           toaster.error({
