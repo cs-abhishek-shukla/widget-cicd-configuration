@@ -4,7 +4,7 @@
   Copyright end -->
 <link rel="stylesheet" type="text/css" href="cicdConfiguration-1.1.0/style.css" />
 <div class="modal-header">
-  <h3 class="modal-title col-md-9">CICD Configuration</h3>
+  <h3 class="modal-title col-md-9">Continuous Delivery Configuration</h3>
 </div>
 
 <wizard on-finish="close()" indicators-position="top" class="cs-wizard ingestion-steps solutionpack-wizard-steps"
@@ -15,16 +15,16 @@
         <div class="display-table fixed-table-layout full-height full-width">
           <div class="full-height display-table-cell vertical-align-middle">
             <div class="col-md-6 display-flex" style="justify-content: center">
-              <img class="img-responsive" src="widgets/installed/cicdConfiguration-1.1.0/images/process.png">
+              <img class="img-responsive" src="{{startInfoGraphics}}">
             </div>
             <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
-              <div class="font-size-40 line-height-1">CICD Configuration</div><br />
-              <div class="padding-right-30 margin-top-sm max-width-450px">
-                <p class="font-size-14 margin-bottom-0">This wizard will guide you through the initial configuration
-                  steps for getting your FortiSOAR environment ready for CICD. You will define whether this FortiSOAR
-                  instance is setup as a development environment for building new content; or the production environment
-                  where the reviewed and unit tested changes should be applied. </p><br />
-                <p class="font-size-14 margin-bottom-0">The wizard will also help you connect your version control
+              <div class="font-size-40 line-height-1">Continuous Delivery Configuration</div><br />
+              <div class="padding-right-30 margin-top-sm width-85">
+                <p class="font-size-14 margin-bottom-0">This wizard guides you through the initial configuration steps
+                  of getting your FortiSOAR environment ready for Continuous Delivery. You can setup this FortiSOAR
+                  instance either as a development environment for building new content, or a production environment
+                  where the reviewed and unit tested changes are applied, or both. </p><br />
+                <p class="font-size-14 margin-bottom-0">The wizard also helps you connect your preferred version control
                   system to FortiSOAR.</p>
               </div>
               <button type="button" class="btn btn-primary btn-sm margin-top-xlg text-transform-none font-size-14"
@@ -42,17 +42,15 @@
         <div class="display-table fixed-table-layout full-height full-width">
           <div class="full-height display-table-cell vertical-align-middle">
             <div class="col-md-6 display-flex" style="justify-content: center">
-              <img class="img-responsive step-image"
-                src="widgets/installed/cicdConfiguration-1.1.0/images/environment.png">
+              <img class="img-responsive step-image" src="{{defineEnvironmentInfoGraphics}}">
             </div>
             <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
               <div class="font-size-40 line-height-1">Define Your Environment</div><br />
-              <div class="padding-right-30 margin-top-sm max-width-450px">
+              <div class="padding-right-30 margin-top-sm width-60">
                 <p class="font-size-14 margin-bottom-0">To see tasks and workflows relevant to the environment, specify
                   whether the current FortiSOAR instance is a Development or a Production environment.</p><br />
                 <p class="font-size-14 margin-bottom-0 padding-bottom-8">You may select both if you have a single
-                  FortiSOAR environment
-                </p>
+                  FortiSOAR instance.</p>
               </div>
               <div class="cs-select">
                 <ui-select name="select_env" id="select_env" on-select="onEnvSelect($item)"
@@ -87,17 +85,16 @@
         <div class="display-table fixed-table-layout full-height full-width">
           <div class="full-height display-table-cell vertical-align-middle">
             <div class="col-md-6 display-flex" style="justify-content: center">
-              <img class="img-responsive step-image"
-                src="widgets/installed/cicdConfiguration-1.1.0/images/environment.png">
+              <img class="img-responsive step-image" src="{{selectSourceControlInfoGraphics}}">
             </div>
             <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
-              <div class="font-size-40 line-height-1">Define Your Source Control</div><br />
-              <div class="padding-right-30 margin-top-sm max-width-450px">
-                <p class="font-size-14 margin-bottom-0">Please choose a source control system from the dropdown menu
-                  below to proceed with the configuration. Source control is a crucial component for managing versioning
-                  and facilitating continuous integration and deployment processes..</p><br />
-                <p class="font-size-14 margin-bottom-0 padding-bottom-8">You may select single Source Control system
-                </p>
+              <div class="font-size-40 line-height-1">Select a Source Control</div><br />
+              <div class="padding-right-30 margin-top-sm width-60">
+                <p class="font-size-14 margin-bottom-0">Select a source control platform from the following dropdown to
+                  begin the configuration process. Source control helps manage versions and facilitates a continuous
+                  integration and deployment process.</p><br />
+                <p class="font-size-14 margin-bottom-0 padding-bottom-8">You can select only one of the available
+                  options.</p>
               </div>
               <div class="cs-select">
                 <select id="select_source_control" name="select_source_control" data-ng-change="onSourceControlSelect()"
@@ -123,19 +120,17 @@
   </wz-step>
   <wz-step wz-title="Configure Source Control" wz-order="4" class="ingestion-modal-padding">
     <div class="full-width wz-step-height padding-bottom-md solutionpack-wizard-modal-body">
-      <div class="font-size-40 line-height-1 text-center">Connect Your Source Control</div><br />
       <div class=" full-height overflow-auto">
         <div class="display-table fixed-table-layout full-height full-width">
           <div class="full-height display-table-cell vertical-align-middle">
             <div class="col-md-6 display-flex" style="justify-content: center">
-              <img class="img-responsive padding-top-70 step-image"
-                src="widgets/installed/cicdConfiguration-1.1.0/images/versionControl.png">
+              <img class="img-responsive padding-top-70 step-image" src="{{configureSourceControlInfoGraphics}}">
             </div>
-            <div
-              class="col-md-6 margin-bottom-65 margin-top-18 margin-top-negative-20 padding-left-0 prerequisites-section">
-              <hr>
+            <div class="col-md-6 padding-left-0 prerequisites-section">
+              <div class="font-size-40 padding-5px">Configure the Source Control</div>
+              <hr class="margin-0">
               <div class="row">
-                <div class="col-md-12 col-sm-12">
+                <div class="col-md-12 col-sm-12 padding-5">
                   <div class="mp-view-summary">
                     <div class="pull-left margin-left-sm margin-right-sm">
                       <div class="custom-installing-spinner-content muted-50 margin-top-12"
@@ -209,7 +204,7 @@
                   <div class="clearfix"></div>
                 </div>
               </div>
-              <hr>
+              <hr class="margin-0">
               <div data-ng-if="selectedConnector"
                 class="margin-top-negative-20 margin-top-md padding-left-0 padding-right-0 connector-config-width"
                 data-ng-include="'app/settings/connectorConfig.html'">
@@ -248,35 +243,40 @@
         <div class="display-table fixed-table-layout full-height full-width">
           <div class="full-height display-table-cell vertical-align-middle">
             <div class="col-md-6 display-flex" style="justify-content: center">
-              <img class="img-responsive" src="widgets/installed/cicdConfiguration-1.1.0/images/finish.png">
+              <img class="img-responsive" src="{{finishInfoGraphics}}">
             </div>
             <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
-              <div class="font-size-40 line-height-1">CICD Configuration Successfully Completed!!</div><br />
+              <div class="font-size-40 line-height-1">
+                <span data-ng-if="isConnectorConfigured || isConnectorHealthy">Continuous Delivery configuration
+                  completed successfully!</span>
+                <span data-ng-if="!isConnectorConfigured">Continuous Delivery configuration is incomplete!</span>
+              </div>
               <div class="padding-right-30 margin-top-sm">
-                <p class="font-size-14 margin-bottom-0">All prerequisites have been configured successfully.</p><br />
-                <p class="font-size-14 margin-bottom-0">You may now navigate to the <a
-                    data-ng-click="close()">'Continuous Delivery'</a> tab in the
-                  navigation and start using the solution.</p>
+                <p class="font-size-14 margin-bottom-0">You may navigate to the <a data-ng-click="close()">'Continuous
+                    Delivery'</a> in the
+                  navigation menu to start using this solution.</p>
               </div>
               <div class="col-md-12 margin-top-lg padding-left-0">
                 <div class="data-ingestion-summary padding-top-lg">
                   <h6 class="font-weight-normal margin-bottom-sm modal-title text-transform-none">Quick Summary</h6>
                   <p><i class="completed icon icon-approval margin-right-md"
                       data-ng-class="{'completed' : configuredEnv.selectedEnv.length !== 0}"></i>
-                    <span data-ng-if="configuredEnv.selectedEnv.picklist.length === 2">Current FortiSOAR instance is
-                      {{configuredEnv.selectedEnv.picklist[0].itemValue}} and
+                    <span data-ng-if="configuredEnv.selectedEnv.picklist.length === 2">Current FortiSOAR instance is set
+                      up for {{configuredEnv.selectedEnv.picklist[0].itemValue}} and
                       {{configuredEnv.selectedEnv.picklist[1].itemValue}}</span>
-                    <span data-ng-if="configuredEnv.selectedEnv.picklist.length === 1">Current FortiSOAR instance is
-                      {{configuredEnv.selectedEnv.picklist[0].itemValue}}</span>
+                    <span data-ng-if="configuredEnv.selectedEnv.picklist.length === 1">Current FortiSOAR instance is set
+                      up for {{configuredEnv.selectedEnv.picklist[0].itemValue}}</span>
                   </p>
                   <p><i class="completed icon icon-approval margin-right-md"
-                      data-ng-class="{'completed' : configuredEnv.sourceControl.length !== 0}"></i>Selected Source
-                    Control is {{configuredEnv.sourceControl.label}}</p>
-                  <p><i class="completed icon icon-approval margin-right-md"></i>
-                    <span data-ng-if="isConnectorHealthy">{{configuredEnv.sourceControl.label}} Connector
-                      Configured</span>
-                    <span data-ng-if="!isConnectorHealthy">{{configuredEnv.sourceControl.label}} Connector is not
-                      Configured</span>
+                      data-ng-class="{'completed' : configuredEnv.sourceControl.length !== 0}"></i>Selected source
+                    control is {{configuredEnv.sourceControl.label}}</p>
+                  <p><i
+                      data-ng-class="isConnectorHealthy ? 'completed icon icon-approval' : 'fa fa-times-circle text-danger font-size-14'"
+                      class="margin-right-md"></i>
+                    <span data-ng-if="isConnectorConfigured || isConnectorHealthy">{{configuredEnv.sourceControl.label}}
+                      connector configuration is complete</span>
+                    <span data-ng-if="!isConnectorConfigured" class="text-danger">{{configuredEnv.sourceControl.label}}
+                      connector is not configured</span>
                   </p>
                 </div>
               </div>
