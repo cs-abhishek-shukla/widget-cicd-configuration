@@ -6,11 +6,11 @@
 (function () {
     angular
         .module('cybersponse')
-        .controller('editCicdConfiguration100Ctrl', editCicdConfiguration100Ctrl);
+        .controller('editCicdConfiguration110Ctrl', editCicdConfiguration110Ctrl);
 
-    editCicdConfiguration100Ctrl.$inject = ['$scope', '$uibModalInstance', 'config'];
+    editCicdConfiguration110Ctrl.$inject = ['$scope', '$uibModalInstance', 'config'];
 
-    function editCicdConfiguration100Ctrl($scope, $uibModalInstance, config) {
+    function editCicdConfiguration110Ctrl($scope, $uibModalInstance, config) {
         $scope.cancel = cancel;
         $scope.save = save;
         $scope.config = config;
