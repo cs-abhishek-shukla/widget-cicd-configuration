@@ -8,7 +8,13 @@
         "pages": [],
         "certified": "Yes",
         "publisher": "Fortinet",
-        "snapshots": [],
+        "snapshots": [
+            "https://repo.fortisoar.fortinet.com/fsr-widgets/cicdConfiguration-1.1.0/images/landing-page.png",
+            "https://repo.fortisoar.fortinet.com/fsr-widgets/cicdConfiguration-1.1.0/images/define-environment.png",
+            "https://repo.fortisoar.fortinet.com/fsr-widgets/cicdConfiguration-1.1.0/images/select-source-control.png",
+            "https://repo.fortisoar.fortinet.com/fsr-widgets/cicdConfiguration-1.1.0/images/configure-source-control.png",
+            "https://repo.fortisoar.fortinet.com/fsr-widgets/cicdConfiguration-1.1.0/images/finish-page.png"
+        ],
         "standalone": true,
         "help_online": "https:\/\/github.com\/fortinet-fortisoar\/widget-cicd-configuration\/blob\/release\/1.1.0\/README.md",
         "description": "CICD Configuration Wizard will configure the FortiSOAR environments as Development, Staging or Production",
