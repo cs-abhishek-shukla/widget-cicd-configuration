@@ -273,7 +273,7 @@
                   <p><i
                       data-ng-class="isConnectorHealthy ? 'completed icon icon-approval' : 'fa fa-times-circle text-danger font-size-14'"
                       class="margin-right-md"></i>
-                    <span data-ng-if="isConnectorConfigured || isConnectorHealthy">{{configuredEnv.sourceControl.label}}
+                    <span data-ng-if="isConnectorConfigured">{{configuredEnv.sourceControl.label}}
                       connector configuration is complete</span>
                     <span data-ng-if="!isConnectorConfigured" class="text-danger">{{configuredEnv.sourceControl.label}}
                       connector is not configured</span>
