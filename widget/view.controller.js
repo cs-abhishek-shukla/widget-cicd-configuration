@@ -1,22 +1,24 @@
 /* Copyright start
   MIT License
-  Copyright (c) 2024 Fortinet Inc
+  Copyright (c) 2025 Fortinet Inc
   Copyright end */
 'use strict';
 (function () {
   angular
     .module('cybersponse')
-    .controller('cicdConfiguration110Ctrl', cicdConfiguration110Ctrl);
+    .controller('cicdConfiguration111Ctrl', cicdConfiguration111Ctrl);
 
-  cicdConfiguration110Ctrl.$inject = ['$q', 'API', '$resource', '$scope', 'Entity', '$http', 'connectorService', 'currentPermissionsService', 'WizardHandler', 'toaster', 'CommonUtils', '$controller', '$window', 'ALL_RECORDS_SIZE', '_', 'marketplaceService', '$state', '$timeout', '$rootScope', 'widgetBasePath'];
+  cicdConfiguration111Ctrl.$inject = ['$q', 'widgetUtilityService', 'API', '$resource', '$scope', 'Entity', '$http', 'connectorService', 'currentPermissionsService', 'WizardHandler', 'toaster', 'CommonUtils', '$controller', '$window', 'ALL_RECORDS_SIZE', '_', 'marketplaceService', '$state', '$timeout', '$rootScope', 'widgetBasePath', 'websocketService'];
 
-  function cicdConfiguration110Ctrl($q, API, $resource, $scope, Entity, $http, connectorService, currentPermissionsService, WizardHandler, toaster, CommonUtils, $controller, $window, ALL_RECORDS_SIZE, _, marketplaceService, $state, $timeout, $rootScope, widgetBasePath) {
+  function cicdConfiguration111Ctrl($q, widgetUtilityService, API, $resource, $scope, Entity, $http, connectorService, currentPermissionsService, WizardHandler, toaster, CommonUtils, $controller, $window, ALL_RECORDS_SIZE, _, marketplaceService, $state, $timeout, $rootScope, widgetBasePath, websocketService) {
     $controller('BaseConnectorCtrl', {
       $scope: $scope
     });
     $scope.processingPicklist = false;
     $scope.processingConnector = false;
     $scope.envCompleted = false;
+    $scope.isPlaybookExecuted = false;
+    $scope.configPlaybookTaskID = '';
     $scope.close = close;
     $scope.moveNext = moveNext;
     $scope.movePrevious = movePrevious;
@@ -26,11 +28,11 @@
     $scope.moveSourceControlNext = moveSourceControlNext;
     $scope.isLightTheme = $rootScope.theme.id === 'light';
     $scope.widgetBasePath = widgetBasePath;
-    $scope.startInfoGraphics = $scope.isLightTheme ? widgetBasePath +'images/start-light.png': widgetBasePath +'images/start-dark.png';
-    $scope.defineEnvironmentInfoGraphics = $scope.isLightTheme ? widgetBasePath +'images/define-environment-light.png': widgetBasePath +'images/define-environment-dark.png';
-    $scope.configureSourceControlInfoGraphics = $scope.isLightTheme ? widgetBasePath +'images/configure-source-control-light.png': widgetBasePath +'images/configure-source-control-dark.png';
-    $scope.selectSourceControlInfoGraphics = $scope.isLightTheme ? widgetBasePath +'images/select-source-control-light.png': widgetBasePath +'images/select-source-control-dark.png';
-    $scope.finishInfoGraphics = widgetBasePath +'images/finish.png';
+    $scope.startInfoGraphics = $scope.isLightTheme ? widgetBasePath + 'images/start-light.png' : widgetBasePath + 'images/start-dark.png';
+    $scope.defineEnvironmentInfoGraphics = $scope.isLightTheme ? widgetBasePath + 'images/define-environment-light.png' : widgetBasePath + 'images/define-environment-dark.png';
+    $scope.configureSourceControlInfoGraphics = $scope.isLightTheme ? widgetBasePath + 'images/configure-source-control-light.png' : widgetBasePath + 'images/configure-source-control-dark.png';
+    $scope.selectSourceControlInfoGraphics = $scope.isLightTheme ? widgetBasePath + 'images/select-source-control-light.png' : widgetBasePath + 'images/select-source-control-dark.png';
+    $scope.finishInfoGraphics = widgetBasePath + 'images/finish.png';
     $scope.saveConnector = saveConnector;
     $scope.envMacro = "cicd_env";
     $scope.formHolder = {};
@@ -51,6 +53,48 @@
     $scope.onSourceControlSelect = function () {
       $scope.selectedSourceControl = true;
     };
+
+    $scope.parent_wf_id = '';
+    var subscription;
+
+    $scope.$on('websocket:reconnect', function () {
+      initWebsocket();
+    });
+
+    function initWebsocket() {
+      websocketService.subscribe('runningworkflow', function (data) {
+        if (data.parent_wf === 'null') {
+          $scope.parent_wf_id = data.instance_ids;
+        }
+        if (data.sourceWebsocketId !== websocketService.getWebsocketSessionId()) {
+          if ($scope.taskId && data.task_id && data.task_id === $scope.taskId && data.parent_wf === 'null') {
+            $scope.taskId = undefined;
+          }
+        }
+        if ((data.status === 'failed' || data.status === 'finished with error' || data.status === 'finished') && $scope.configPlaybookTaskID === data.task_id) {
+          getPlaybookResult();
+        }
+      }).then(function (data) {
+        subscription = data;
+      });
+    }
+
+    $scope.$on('$destroy', function () {
+      if (subscription) {
+        // Unsubscribe
+        websocketService.unsubscribe(subscription);
+      }
+    });
+
+    function getPlaybookResult() {
+      var endpoint = API.WORKFLOW + 'api/workflows/' + $scope.parent_wf_id + '/';
+      $http.get(endpoint).then(function (response) {
+        if (response.data.status === 'finished' || response.data.status === 'finished with error') {
+          WizardHandler.wizard('solutionpackWizard').next();
+        }
+        $scope.isPlaybookExecuted = false;
+      });
+    }
 
     function _loadDynamicVariable(variableName) {
       var defer = $q.defer();
@@ -191,11 +235,15 @@
     }
 
     function moveVersionControlNext() {
+      initWebsocket();
       triggerPlaybook();
-      WizardHandler.wizard('solutionpackWizard').next();
     }
 
     function movePrevious() {
+      $scope.isPlaybookExecuted = false;
+      if (subscription) {
+        websocketService.unsubscribe(subscription);
+      }
       WizardHandler.wizard('solutionpackWizard').previous();
     }
 
@@ -210,15 +258,16 @@
       connectorService.getConnector(connectorName, connectorVersion).then(function (connector) {
         marketplaceService.getContentDetails(API.BASE + 'solutionpacks/' + sourceControl.uuid + '?$relationships=true').then(function (response) {
           $scope.contentDetail = response.data;
-          if(connector.configuration.length > 0){
+          if (connector.configuration.length > 0) {
+            $scope.configuredConnector = true;
             $scope.isConnectorConfigured = true;
-          connectorService.getConnectorHealth(response.data, connector.configuration[0].config_id, connector.configuration[0].agent).then(function (data) {
-            if (data.status === "Available") {
-              $scope.isConnectorHealthy = true;
-            }
-          });
-        }
-          else{
+            connectorService.getConnectorHealth(response.data, connector.configuration[0].config_id, connector.configuration[0].agent).then(function (data) {
+              if (data.status === "Available") {
+                $scope.isConnectorHealthy = true;
+              }
+            });
+          }
+          else {
             $scope.isConnectorConfigured = false;
           }
         });
@@ -241,10 +290,53 @@
       }
       var queryUrl = API.MANUAL_TRIGGER + '936a5236-e7ca-4c44-b3cf-cce8937df365';
       $http.post(queryUrl, queryPayload).then(function (response) {
-        console.log(response);
+        $scope.configPlaybookTaskID = response.data.task_id;
+        $scope.isPlaybookExecuted = true;
       });
     }
+
+    function _handleTranslations() {
+      widgetUtilityService.checkTranslationMode($scope.$parent.model.type).then(function () {
+        $scope.viewWidgetVars = {
+          // Create your translating static string variables here
+          WIDGET_LABEL: widgetUtilityService.translate('cicdConfiguration.WIDGET_LABEL'),
+          BACK_BTN: widgetUtilityService.translate('cicdConfiguration.BACK_BTN'),
+          NEXT_BTN: widgetUtilityService.translate('cicdConfiguration.NEXT_BTN'),
+          SAVE_BTN: widgetUtilityService.translate('cicdConfiguration.SAVE_BTN'),
+          CANCEL_BTN: widgetUtilityService.translate('cicdConfiguration.CANCEL_BTN'),
+          SKIP_BTN: widgetUtilityService.translate('cicdConfiguration.SKIP_BTN'),
+          FINISH_BTN: widgetUtilityService.translate('cicdConfiguration.FINISH_BTN'),
+
+          START_PAGE_DESC: widgetUtilityService.translate('cicdConfiguration.START_PAGE_DESC'),
+          START_PAGE_DESC1: widgetUtilityService.translate('cicdConfiguration.START_PAGE_DESC1'),
+          START_PAGE_NEXT_BUTTON: widgetUtilityService.translate('cicdConfiguration.START_PAGE_NEXT_BUTTON'),
+
+          DEFINE_ENV_PAGE_TITLE: widgetUtilityService.translate('cicdConfiguration.DEFINE_ENV_PAGE_TITLE'),
+          DEFINE_ENV_PAGE_DESC: widgetUtilityService.translate('cicdConfiguration.DEFINE_ENV_PAGE_DESC'),
+          DEFINE_ENV_PAGE_DESC1: widgetUtilityService.translate('cicdConfiguration.DEFINE_ENV_PAGE_DESC1'),
+
+          SOURCE_CONTROL_TITLE: widgetUtilityService.translate('cicdConfiguration.SOURCE_CONTROL_TITLE'),
+          SOURCE_CONTROL_DESC: widgetUtilityService.translate('cicdConfiguration.SOURCE_CONTROL_DESC'),
+          SOURCE_CONTROL_DESC1: widgetUtilityService.translate('cicdConfiguration.SOURCE_CONTROL_DESC1'),
+
+          CONFIG_SOURCE_CONTROL_TITLE: widgetUtilityService.translate('cicdConfiguration.CONFIG_SOURCE_CONTROL_TITLE'),
+
+          FINISH_PAGE_SUCCESS_MSG: widgetUtilityService.translate('cicdConfiguration.FINISH_PAGE_SUCCESS_MSG'),
+          FINISH_PAGE_ERROR_MSG: widgetUtilityService.translate('cicdConfiguration.FINISH_PAGE_ERROR_MSG'),
+          FINISH_PAGE_NAVIGATE: widgetUtilityService.translate('cicdConfiguration.FINISH_PAGE_NAVIGATE'),
+          FINISH_PAGE_NAVIGATE1: widgetUtilityService.translate('cicdConfiguration.FINISH_PAGE_NAVIGATE1'),
+          FINISH_PAGE_NAVIGATE2: widgetUtilityService.translate('cicdConfiguration.FINISH_PAGE_NAVIGATE2'),
+          FINISH_PAGE_SUMMARY_LABEL: widgetUtilityService.translate('cicdConfiguration.FINISH_PAGE_SUMMARY_LABEL'),
+          FINISH_PAGE_SUMMARY_LABEL1: widgetUtilityService.translate('cicdConfiguration.FINISH_PAGE_SUMMARY_LABEL1'),
+          FINISH_PAGE_SUMMARY_LABEL2: widgetUtilityService.translate('cicdConfiguration.FINISH_PAGE_SUMMARY_LABEL2'),
+          FINISH_PAGE_SUMMARY_LABEL3: widgetUtilityService.translate('cicdConfiguration.FINISH_PAGE_SUMMARY_LABEL3'),
+          FINISH_PAGE_SUMMARY_LABEL4: widgetUtilityService.translate('cicdConfiguration.FINISH_PAGE_SUMMARY_LABEL4'),
+        };
+      });
+    }
+
     function _init() {
+      _handleTranslations();
       var queryString = {
         $limit: ALL_RECORDS_SIZE,
         name: 'Solution Pack Category'
@@ -265,8 +357,10 @@
         };
         $resource(API.QUERY + 'solutionpacks').save({ $limit: ALL_RECORDS_SIZE }, queryBody).$promise.then(function (response) {
           if (response['hydra:member'] || response['hydra:member'].length > 0) {
-            $scope.sourceControls = _.map(response['hydra:member'], obj => _.pick(obj, ['name', 'label', 'version', 'uuid'])
-            );
+            $scope.sourceControls = _.chain(response['hydra:member'])
+              .filter(obj => obj.name === 'gitlab' || obj.name === 'github')
+              .map(obj => _.pick(obj, ['name', 'label', 'version', 'uuid']))
+              .value();
           }
         });
       });

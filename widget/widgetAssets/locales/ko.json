@@ -1,0 +1,36 @@
+{
+  "cicdConfiguration": {
+    "WIDGET_LABEL": "지속적 전달(CI/CD) 구성",
+    "BACK_BTN": "뒤로",
+    "NEXT_BTN": "다음",
+    "SAVE_BTN": "저장",
+    "CANCEL_BTN": "취소",
+    "SKIP_BTN": "건너뛰기",
+    "FINISH_BTN": "완료",
+
+    "START_PAGE_DESC": "이 마법사(wizard)는 FortiSOAR 환경을 지속적 전달을 위한 준비 상태로 만드는 초기 구성 단계를 안내합니다. 이 FortiSOAR 인스턴스를 새로운 콘텐츠를 구축하는 개발 환경으로 설정하거나, 검토 및 단위 테스트된 변경 사항이 적용되는 프로덕션 환경으로 설정하거나, 두 환경 모두로 설정할 수 있습니다.",
+    "START_PAGE_DESC1": "이 마법사는 선호하는 버전 관리 시스템을 FortiSOAR에 연결하는 것도 도와줍니다.",
+    "START_PAGE_NEXT_BUTTON": "시작해볼까요",
+
+    "DEFINE_ENV_PAGE_TITLE": "환경 정의",
+    "DEFINE_ENV_PAGE_DESC": "환경과 관련된 작업 및 워크플로를 보려면 현재 FortiSOAR 인스턴스를 개발 환경 또는 프로덕션 환경으로 지정하세요.",
+    "DEFINE_ENV_PAGE_DESC1": "단일 FortiSOAR 인스턴스를 사용하는 경우 두 환경 모두를 선택할 수 있습니다.",
+
+    "SOURCE_CONTROL_TITLE": "소스 컨트롤 선택",
+    "SOURCE_CONTROL_DESC": "다음 드롭다운에서 소스 컨트롤 플랫폼을 선택하여 구성 프로세스를 시작하세요. 소스 컨트롤은 버전 관리를 돕고 지속적 통합 및 배포 프로세스를 원활하게 합니다.",
+    "SOURCE_CONTROL_DESC1": "이용 가능한 옵션 중 하나만 선택할 수 있습니다.",
+
+    "CONFIG_SOURCE_CONTROL_TITLE": "소스 컨트롤 구성",
+
+    "FINISH_PAGE_SUCCESS_MSG": "지속적 전달 구성에 성공했습니다!",
+    "FINISH_PAGE_ERROR_MSG": "지속적 전달 구성이 완료되지 않았습니다!",
+    "FINISH_PAGE_NAVIGATE": "네비게이션 메뉴의 ",
+    "FINISH_PAGE_NAVIGATE1": "「지속적 전달」",
+    "FINISH_PAGE_NAVIGATE2": "로 이동하여 이 솔루션 사용을 시작할 수 있습니다.",
+    "FINISH_PAGE_SUMMARY_LABEL": "빠른 요약",
+    "FINISH_PAGE_SUMMARY_LABEL1": "현재 FortiSOAR 인스턴스는 다음과 같이 설정되어 있습니다：",
+    "FINISH_PAGE_SUMMARY_LABEL2": "선택된 소스 컨트롤은：",
+    "FINISH_PAGE_SUMMARY_LABEL3": "커넥터 구성이 완료되었습니다",
+    "FINISH_PAGE_SUMMARY_LABEL4": "커넥터가 구성되지 않았습니다"
+  }
+}
