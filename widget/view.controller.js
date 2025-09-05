@@ -356,7 +356,7 @@
           ]
         };
         $resource(API.QUERY + 'solutionpacks').save({ $limit: ALL_RECORDS_SIZE }, queryBody).$promise.then(function (response) {
-          if (response['hydra:member'] || response['hydra:member'].length > 0) {
+          if (response['hydra:member'] && response['hydra:member'].length > 0) {
             $scope.sourceControls = _.chain(response['hydra:member'])
               .filter(obj => obj.name === 'gitlab' || obj.name === 'github')
               .map(obj => _.pick(obj, ['name', 'label', 'version', 'uuid']))
