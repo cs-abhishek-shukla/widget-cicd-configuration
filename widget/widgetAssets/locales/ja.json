@@ -1,0 +1,36 @@
+{
+  "cicdConfiguration": {
+    "WIDGET_LABEL": "継続的デリバリー設定",
+    "BACK_BTN": "戻る",
+    "NEXT_BTN": "次へ",
+    "SAVE_BTN": "保存",
+    "CANCEL_BTN": "キャンセル",
+    "SKIP_BTN": "スキップ",
+    "FINISH_BTN": "終了",
+
+    "START_PAGE_DESC": "このウィザードは、FortiSOAR 環境を継続的デリバリーの準備ができた環境にするための初期設定手順をご案内します。この FortiSOAR インスタンスを、新しいコンテンツを構築するための開発環境として、またはレビューとユニットテストされた変更を適用する本番環境として、あるいはその両方として設定できます。",
+    "START_PAGE_DESC1": "ウィザードは、お好みのバージョン管理システムを FortiSOAR に接続する手順も支援します。",
+    "START_PAGE_NEXT_BUTTON": "始めましょう",
+
+    "DEFINE_ENV_PAGE_TITLE": "環境を定義する",
+    "DEFINE_ENV_PAGE_DESC": "環境に関連するタスクやワークフローを表示するには、現在の FortiSOAR インスタンスを開発環境または本番環境のいずれかとして指定してください。",
+    "DEFINE_ENV_PAGE_DESC1": "単一の FortiSOAR インスタンスをお持ちの場合は、両方を選択できます。",
+
+    "SOURCE_CONTROL_TITLE": "ソースコントロールを選択",
+    "SOURCE_CONTROL_DESC": "以下のドロップダウンからソースコントロールプラットフォームを選択して、設定プロセスを開始します。ソースコントロールはバージョン管理を支援し、継続的インテグレーションおよびデプロイプロセスを促進します。",
+    "SOURCE_CONTROL_DESC1": "利用可能なオプションのうち、1 つのみ選択できます。",
+
+    "CONFIG_SOURCE_CONTROL_TITLE": "ソースコントロールを構成する",
+
+    "FINISH_PAGE_SUCCESS_MSG": "継続的デリバリーの設定が正常に完了しました！",
+    "FINISH_PAGE_ERROR_MSG": "継続的デリバリーの設定が完了していません！",
+    "FINISH_PAGE_NAVIGATE": "ナビゲーションメニューの",
+    "FINISH_PAGE_NAVIGATE1": "「継続的デリバリー」",
+    "FINISH_PAGE_NAVIGATE2": "に移動して、このソリューションの使用を開始できます。",
+    "FINISH_PAGE_SUMMARY_LABEL": "クイックサマリー",
+    "FINISH_PAGE_SUMMARY_LABEL1": "現在の FortiSOAR インスタンスは以下のように設定されています：",
+    "FINISH_PAGE_SUMMARY_LABEL2": "選択されたソースコントロールは：",
+    "FINISH_PAGE_SUMMARY_LABEL3": "コネクターの構成が完了しています",
+    "FINISH_PAGE_SUMMARY_LABEL4": "コネクターは構成されていません"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "cicdConfiguration": {
+    "WIDGET_LABEL": "持续交付配置",
+    "BACK_BTN": "返回",
+    "NEXT_BTN": "下一步",
+    "SAVE_BTN": "保存",
+    "CANCEL_BTN": "取消",
+    "SKIP_BTN": "跳过",
+    "FINISH_BTN": "完成",
+
+    "START_PAGE_DESC": "此向导将引导您完成 FortiSOAR 环境为持续交付准备就绪的初始配置步骤。您可以将该 FortiSOAR 实例设置为用于构建新内容的开发环境，或用于应用审核和单元测试更改的生产环境，亦或同时设置为两者。",
+    "START_PAGE_DESC1": "该向导还将帮助您将首选版本控制系统连接到 FortiSOAR。",
+    "START_PAGE_NEXT_BUTTON": "开始吧",
+
+    "DEFINE_ENV_PAGE_TITLE": "定义您的环境",
+    "DEFINE_ENV_PAGE_DESC": "要查看与环境相关的任务和工作流，请指定当前 FortiSOAR 实例是开发环境还是生产环境。",
+    "DEFINE_ENV_PAGE_DESC1": "如果您只有一个 FortiSOAR 实例，则可以选择两者。",
+
+    "SOURCE_CONTROL_TITLE": "选择源代码管理",
+    "SOURCE_CONTROL_DESC": "从以下下拉列表中选择源代码管理平台以开始配置流程。源代码管理有助于管理版本并促进持续集成和部署流程。",
+    "SOURCE_CONTROL_DESC1": "您只能选择一个可用选项。",
+
+    "CONFIG_SOURCE_CONTROL_TITLE": "配置源代码管理",
+
+    "FINISH_PAGE_SUCCESS_MSG": "持续交付配置已成功完成！",
+    "FINISH_PAGE_ERROR_MSG": "持续交付配置未完成！",
+    "FINISH_PAGE_NAVIGATE": "您可以导航到 ",
+    "FINISH_PAGE_NAVIGATE1": "“持续交付”",
+    "FINISH_PAGE_NAVIGATE2": " 菜单中以开始使用此解决方案。",
+    "FINISH_PAGE_SUMMARY_LABEL": "快速摘要",
+    "FINISH_PAGE_SUMMARY_LABEL1": "当前 FortiSOAR 实例设置为 ",
+    "FINISH_PAGE_SUMMARY_LABEL2": "所选源代码管理为 ",
+    "FINISH_PAGE_SUMMARY_LABEL3": " 连接器配置已完成",
+    "FINISH_PAGE_SUMMARY_LABEL4": " 连接器未配置"
+  }
+}

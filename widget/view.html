@@ -1,10 +1,10 @@
 <!-- Copyright start
   MIT License
-  Copyright (c) 2024 Fortinet Inc
+  Copyright (c) 2025 Fortinet Inc
   Copyright end -->
-<link rel="stylesheet" type="text/css" href="cicdConfiguration-1.1.0/style.css" />
+<link rel="stylesheet" type="text/css" href="cicdConfiguration-1.1.1/style.css" />
 <div class="modal-header">
-  <h3 class="modal-title col-md-9">Continuous Delivery Configuration</h3>
+  <h3 class="modal-title col-md-9">{{viewWidgetVars.WIDGET_LABEL}}</h3>
 </div>
 
 <wizard on-finish="close()" indicators-position="top" class="cs-wizard ingestion-steps solutionpack-wizard-steps"
@@ -18,17 +18,13 @@
               <img class="img-responsive" src="{{startInfoGraphics}}">
             </div>
             <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
-              <div class="font-size-40 line-height-1">Continuous Delivery Configuration</div><br />
+              <div class="font-size-40 line-height-1">{{viewWidgetVars.WIDGET_LABEL}}</div><br />
               <div class="padding-right-30 margin-top-sm width-85">
-                <p class="font-size-14 margin-bottom-0">This wizard guides you through the initial configuration steps
-                  of getting your FortiSOAR environment ready for Continuous Delivery. You can setup this FortiSOAR
-                  instance either as a development environment for building new content, or a production environment
-                  where the reviewed and unit tested changes are applied, or both. </p><br />
-                <p class="font-size-14 margin-bottom-0">The wizard also helps you connect your preferred version control
-                  system to FortiSOAR.</p>
+                <p class="font-size-14 margin-bottom-0">{{viewWidgetVars.START_PAGE_DESC}} </p><br />
+                <p class="font-size-14 margin-bottom-0">{{viewWidgetVars.START_PAGE_DESC1}}</p>
               </div>
               <button type="button" class="btn btn-primary btn-sm margin-top-xlg text-transform-none font-size-14"
-                data-ng-click="moveNext()" id="solutionpack-next-btn">Let's get started<i
+                data-ng-click="moveNext()" id="solutionpack-next-btn">{{viewWidgetVars.START_PAGE_NEXT_BUTTON}}<i
                   class="fa fa-chevron-right margin-left-sm"></i></button>
             </div>
           </div>
@@ -45,12 +41,10 @@
               <img class="img-responsive step-image" src="{{defineEnvironmentInfoGraphics}}">
             </div>
             <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
-              <div class="font-size-40 line-height-1">Define Your Environment</div><br />
+              <div class="font-size-40 line-height-1">{{viewWidgetVars.DEFINE_ENV_PAGE_TITLE}}</div><br />
               <div class="padding-right-30 margin-top-sm width-60">
-                <p class="font-size-14 margin-bottom-0">To see tasks and workflows relevant to the environment, specify
-                  whether the current FortiSOAR instance is a Development or a Production environment.</p><br />
-                <p class="font-size-14 margin-bottom-0 padding-bottom-8">You may select both if you have a single
-                  FortiSOAR instance.</p>
+                <p class="font-size-14 margin-bottom-0">{{viewWidgetVars.DEFINE_ENV_PAGE_DESC}}</p><br />
+                <p class="font-size-14 margin-bottom-0 padding-bottom-8">{{viewWidgetVars.DEFINE_ENV_PAGE_DESC1}}</p>
               </div>
               <div class="cs-select">
                 <ui-select name="select_env" id="select_env" on-select="onEnvSelect($item)"
@@ -72,10 +66,10 @@
     <div class="ingestion-modal-footer">
       <button type="button" class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg"
         id="solutionpack-configure-back-start-btn" data-ng-click="movePrevious()"><i
-          class="fa fa-chevron-left margin-right-sm"></i>Back</button>
+          class="fa fa-chevron-left margin-right-sm"></i>{{viewWidgetVars.BACK_BTN}}</button>
       <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg"
         data-ng-click="moveSourceControlNext()" id="solutionpack-configure-source-control-next-btn"
-        data-ng-disabled="processingPicklist===false">Next<i class="fa fa-chevron-right margin-left-sm"></i>
+        data-ng-disabled="processingPicklist===false">{{viewWidgetVars.NEXT_BTN}}<i class="fa fa-chevron-right margin-left-sm"></i>
       </button>
     </div>
   </wz-step>
@@ -88,13 +82,10 @@
               <img class="img-responsive step-image" src="{{selectSourceControlInfoGraphics}}">
             </div>
             <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
-              <div class="font-size-40 line-height-1">Select a Source Control</div><br />
+              <div class="font-size-40 line-height-1">{{viewWidgetVars.SOURCE_CONTROL_TITLE}}</div><br />
               <div class="padding-right-30 margin-top-sm width-60">
-                <p class="font-size-14 margin-bottom-0">Select a source control platform from the following dropdown to
-                  begin the configuration process. Source control helps manage versions and facilitates a continuous
-                  integration and deployment process.</p><br />
-                <p class="font-size-14 margin-bottom-0 padding-bottom-8">You can select only one of the available
-                  options.</p>
+                <p class="font-size-14 margin-bottom-0">{{viewWidgetVars.SOURCE_CONTROL_DESC}}</p><br />
+                <p class="font-size-14 margin-bottom-0 padding-bottom-8">{{viewWidgetVars.SOURCE_CONTROL_DESC1}}</p>
               </div>
               <div class="cs-select">
                 <select id="select_source_control" name="select_source_control" data-ng-change="onSourceControlSelect()"
@@ -111,10 +102,10 @@
     <div class="ingestion-modal-footer">
       <button type="button" class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg"
         id="solutionpack-configure-back-env-btn" data-ng-click="moveEnvPrevious()"><i
-          class="fa fa-chevron-left margin-right-sm"></i>Back</button>
+          class="fa fa-chevron-left margin-right-sm"></i>{{viewWidgetVars.BACK_BTN}}</button>
       <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg"
         data-ng-click="moveEnvironmentNext()" id="solutionpack-configure-env-next-btn"
-        data-ng-disabled="!selectedSourceControl">Next<i class="fa fa-chevron-right margin-left-sm"></i>
+        data-ng-disabled="!selectedSourceControl">{{viewWidgetVars.NEXT_BTN}}<i class="fa fa-chevron-right margin-left-sm"></i>
       </button>
     </div>
   </wz-step>
@@ -127,7 +118,7 @@
               <img class="img-responsive padding-top-70 step-image" src="{{configureSourceControlInfoGraphics}}">
             </div>
             <div class="col-md-6 padding-left-0 prerequisites-section">
-              <div class="font-size-40 padding-5px">Configure the Source Control</div>
+              <div class="font-size-40 padding-5px">{{viewWidgetVars.CONFIG_SOURCE_CONTROL_TITLE}}</div>
               <hr class="margin-0">
               <div class="row">
                 <div class="col-md-12 col-sm-12 padding-5">
@@ -166,7 +157,7 @@
                       </div>
                       <span class="mp-view-properties">
                         <span class="mp-view-properties grey-text">Version</span>
-                        <span>{{contentDetail.version}}</span><span
+                      <span>{{contentDetail.version}}</span><span
                           data-ng-if="contentDetail.buildNumber">-{{contentDetail.buildNumber}}</span>
                       </span>
                       <p class="mp-view-properties margin-bottom-xsm"><span class="grey-text">Certified:</span>
@@ -213,10 +204,10 @@
                 <button type="button" class="btn btn-primary"
                   data-ng-disabled="!(formHolder.connectorForm.$valid && formHolder.connectorForm.$dirty)"
                   data-ng-click="saveConnector()" id="submit-github-config-add-btn"><i
-                    class="icon icon-check margin-right-sm"></i>Save</button>
+                    class="icon icon-check margin-right-sm"></i>{{viewWidgetVars.SAVE_BTN}}</button>
                 <button type="button" class="btn btn-default" data-ng-disabled="processing"
                   data-ng-click="closeConfiguration()" id="cancel-github-config-add-btn"><i
-                    class="icon icon-close margin-right-sm"></i>Cancel</button>
+                    class="icon icon-close margin-right-sm"></i>{{viewWidgetVars.CANCEL_BTN}}</button>
               </div>
             </div>
           </div>
@@ -224,16 +215,26 @@
       </div>
     </div>
     <div class="ingestion-modal-footer">
-      <button type="button" class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg"
-        id="version-control-back-btn" data-ng-click="movePrevious()"><i
-          class="fa fa-chevron-left margin-right-sm"></i>Back</button>
-      <button type="button" class="btn btn-default pull-right btn-sm margin-top-lg margin-right-lg text-tranformtion"
-        id="skip-source-control-btn" data-ng-disabled="configuredConnector" data-ng-click="moveVersionControlNext()">
-        Skip
-        <i class="fa fa-chevron-right margin-left-sm"></i></button>
-      <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg"
-        data-ng-disabled="!configuredConnector" data-ng-click="moveVersionControlNext()"
-        id="version-control-next-btn">Next<i class="fa fa-chevron-right margin-left-sm"></i>
+      <button type="button"
+        class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg"
+        id="version-control-back-btn"
+        data-ng-click="movePrevious()">
+        <i class="fa fa-chevron-left margin-right-sm"></i>{{viewWidgetVars.BACK_BTN}}
+      </button>
+      <button type="button"
+        class="btn btn-default pull-right btn-sm margin-top-lg margin-right-lg text-tranformtion"
+        data-ng-if="!configuredConnector"
+        data-ng-disabled="!configuredConnector && isPlaybookExecuted"
+        id="skip-source-control-btn"
+        data-ng-click="moveVersionControlNext()">{{viewWidgetVars.SKIP_BTN}}
+        <i class="fa margin-left-sm" data-ng-class="isPlaybookExecuted ? 'fa-spin fa-spinner' : 'fa-chevron-right'"></i>
+      </button>
+      <button type="button"
+        class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg"
+        data-ng-if="configuredConnector"
+        data-ng-disabled="configuredConnector && isPlaybookExecuted"
+        data-ng-click="moveVersionControlNext()"
+        id="version-control-next-btn">Next<i class="fa margin-left-sm" data-ng-class="isPlaybookExecuted ? 'fa-spin fa-spinner' : 'fa-chevron-right'"></i>
       </button>
     </div>
   </wz-step>
@@ -247,36 +248,30 @@
             </div>
             <div class="col-md-6 prerequisites-section padding-bottom-25 padding-left-0">
               <div class="font-size-40 line-height-1">
-                <span data-ng-if="isConnectorConfigured || isConnectorHealthy">Continuous Delivery configuration
-                  completed successfully!</span>
-                <span data-ng-if="!isConnectorConfigured">Continuous Delivery configuration is incomplete!</span>
+                <span data-ng-if="isConnectorConfigured || isConnectorHealthy">{{viewWidgetVars.FINISH_PAGE_SUCCESS_MSG}}</span>
+                <span data-ng-if="!isConnectorConfigured">{{viewWidgetVars.FINISH_PAGE_ERROR_MSG}}</span>
               </div>
               <div class="padding-right-30 margin-top-sm">
-                <p class="font-size-14 margin-bottom-0">You may navigate to the <a data-ng-click="close()">'Continuous
-                    Delivery'</a> in the
-                  navigation menu to start using this solution.</p>
+                <p class="font-size-14 margin-bottom-0">{{viewWidgetVars.FINISH_PAGE_NAVIGATE}}<a
+                    data-ng-click="close()">{{viewWidgetVars.FINISH_PAGE_NAVIGATE1}}</a>{{viewWidgetVars.FINISH_PAGE_NAVIGATE2}}
+                </p>
               </div>
               <div class="col-md-12 margin-top-lg padding-left-0">
                 <div class="data-ingestion-summary padding-top-lg">
-                  <h6 class="font-weight-normal margin-bottom-sm modal-title text-transform-none">Quick Summary</h6>
+                  <h6 class="font-weight-normal margin-bottom-sm modal-title text-transform-none">{{viewWidgetVars.FINISH_PAGE_SUMMARY_LABEL}}</h6>
                   <p><i class="completed icon icon-approval margin-right-md"
                       data-ng-class="{'completed' : configuredEnv.selectedEnv.length !== 0}"></i>
-                    <span data-ng-if="configuredEnv.selectedEnv.picklist.length === 2">Current FortiSOAR instance is set
-                      up for {{configuredEnv.selectedEnv.picklist[0].itemValue}} and
+                    <span data-ng-if="configuredEnv.selectedEnv.picklist.length === 2">{{viewWidgetVars.FINISH_PAGE_SUMMARY_LABEL1}}{{configuredEnv.selectedEnv.picklist[0].itemValue}} and
                       {{configuredEnv.selectedEnv.picklist[1].itemValue}}</span>
-                    <span data-ng-if="configuredEnv.selectedEnv.picklist.length === 1">Current FortiSOAR instance is set
-                      up for {{configuredEnv.selectedEnv.picklist[0].itemValue}}</span>
+                    <span data-ng-if="configuredEnv.selectedEnv.picklist.length === 1">{{viewWidgetVars.FINISH_PAGE_SUMMARY_LABEL1}}{{configuredEnv.selectedEnv.picklist[0].itemValue}}</span>
                   </p>
                   <p><i class="completed icon icon-approval margin-right-md"
-                      data-ng-class="{'completed' : configuredEnv.sourceControl.length !== 0}"></i>Selected source
-                    control is {{configuredEnv.sourceControl.label}}</p>
+                      data-ng-class="{'completed' : configuredEnv.sourceControl.length !== 0}"></i>{{viewWidgetVars.FINISH_PAGE_SUMMARY_LABEL2}}{{configuredEnv.sourceControl.label}}</p>
                   <p><i
                       data-ng-class="isConnectorHealthy ? 'completed icon icon-approval' : 'fa fa-times-circle text-danger font-size-14'"
                       class="margin-right-md"></i>
-                    <span data-ng-if="isConnectorConfigured">{{configuredEnv.sourceControl.label}}
-                      connector configuration is complete</span>
-                    <span data-ng-if="!isConnectorConfigured" class="text-danger">{{configuredEnv.sourceControl.label}}
-                      connector is not configured</span>
+                    <span data-ng-if="isConnectorConfigured">{{configuredEnv.sourceControl.label}}{{viewWidgetVars.FINISH_PAGE_SUMMARY_LABEL3}}</span>
+                    <span data-ng-if="!isConnectorConfigured" class="text-danger">{{configuredEnv.sourceControl.label}}{{viewWidgetVars.FINISH_PAGE_SUMMARY_LABEL4}}</span>
                   </p>
                 </div>
               </div>
@@ -288,9 +283,9 @@
     <div class="ingestion-modal-footer">
       <button type="button" class="btn btn-sm btn-second-primary margin-top-lg margin-left-lg"
         id="solutionpack-configure-back-btn" data-ng-click="movePrevious()"><i
-          class="fa fa-chevron-left margin-right-sm"></i>Back</button>
+          class="fa fa-chevron-left margin-right-sm"></i>{{viewWidgetVars.BACK_BTN}}</button>
       <button type="button" class="btn btn-primary pull-right btn-sm margin-top-lg margin-right-lg"
-        data-ng-click="close()" id="solutionpack-configure-finish-btn">Finish<i
+        data-ng-click="close()" id="solutionpack-configure-finish-btn">{{viewWidgetVars.FINISH_BTN}}<i
           class="fa fa-chevron-right margin-left-sm"></i>
       </button>
     </div>

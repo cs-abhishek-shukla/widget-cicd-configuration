@@ -1,0 +1,38 @@
+{
+    "cicdConfiguration": {
+        "WIDGET_LABEL": "Continuous Delivery Configuration",
+        "BACK_BTN": "Back",
+        "NEXT_BTN": "Next",
+        "SAVE_BTN": "Save",
+        "CANCEL_BTN": "Cancel",
+        "SKIP_BTN": "Skip",
+        "FINISH_BTN": "Finish",
+
+        "START_PAGE_DESC": "This wizard guides you through the initial configuration steps of getting your FortiSOAR environment ready for Continuous Delivery. You can setup this FortiSOAR instance either as a development environment for building new content, or a production environment where the reviewed and unit tested changes are applied, or both. ",
+        "START_PAGE_DESC1": "The wizard also helps you connect your preferred version control system to FortiSOAR.",
+        "START_PAGE_NEXT_BUTTON": "Let's get started",
+
+        "DEFINE_ENV_PAGE_TITLE": "Define Your Environment",
+        "DEFINE_ENV_PAGE_DESC": "To see tasks and workflows relevant to the environment, specify whether the current FortiSOAR instance is a Development or a Production environment.",
+        "DEFINE_ENV_PAGE_DESC1": "You may select both if you have a single FortiSOAR instance.",
+
+        "SOURCE_CONTROL_TITLE": "Select a Source Control",
+        "SOURCE_CONTROL_DESC": "Select a source control platform from the following dropdown to begin the configuration process. Source control helps manage versions and facilitates a continuous integration and deployment process.",
+        "SOURCE_CONTROL_DESC1": "You can select only one of the available options.",
+
+        "CONFIG_SOURCE_CONTROL_TITLE": "Configure the Source Control",
+
+        "FINISH_PAGE_SUCCESS_MSG": "Continuous Delivery configuration completed successfully!",
+        "FINISH_PAGE_ERROR_MSG": "Continuous Delivery configuration is incomplete!",
+        "FINISH_PAGE_NAVIGATE": "You may navigate to the ",
+        "FINISH_PAGE_NAVIGATE1": "'Continuous Delivery'",
+        "FINISH_PAGE_NAVIGATE2": " in the navigation menu to start using this solution.",
+        "FINISH_PAGE_SUMMARY_LABEL": "Quick Summary",
+        "FINISH_PAGE_SUMMARY_LABEL1": "Current FortiSOAR instance is set up for ",
+        "FINISH_PAGE_SUMMARY_LABEL2": "Selected source control is ",
+        "FINISH_PAGE_SUMMARY_LABEL3": " connector configuration is complete",
+        "FINISH_PAGE_SUMMARY_LABEL4": " connector is not configured"
+
+
+    }
+}
