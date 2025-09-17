@@ -72,7 +72,7 @@
           }
         }
         if ((data.status === 'failed' || data.status === 'finished with error' || data.status === 'finished') && $scope.configPlaybookTaskID === data.task_id) {
-          getPlaybookResult();
+          _getPlaybookResult();
         }
       }).then(function (data) {
         subscription = data;
@@ -86,11 +86,23 @@
       }
     });
 
-    function getPlaybookResult() {
+    function _getPlaybookResult() {
       var endpoint = API.WORKFLOW + 'api/workflows/' + $scope.parent_wf_id + '/';
       $http.get(endpoint).then(function (response) {
-        if (response.data.status === 'finished' || response.data.status === 'finished with error') {
+        if (response.data.status === 'finished') {
+          if (subscription) {
+            websocketService.unsubscribe(subscription);
+          }
           WizardHandler.wizard('solutionpackWizard').next();
+        }
+        else if (response.data.status === 'finished with error' || response.data.status === 'failed') {
+          if (!$scope.isToaster) {
+            toaster.warning({
+              body: "The \"Setup CICD Environment\" playbook has failed. Check the playbook logs for details."
+            });
+            $scope.isToaster = true;
+            websocketService.unsubscribe(subscription);
+          }
         }
         $scope.isPlaybookExecuted = false;
       });
@@ -235,7 +247,6 @@
     }
 
     function moveVersionControlNext() {
-      initWebsocket();
       triggerPlaybook();
     }
 
@@ -284,6 +295,8 @@
     }
 
     function triggerPlaybook() {
+      $scope.isToaster = false;
+      initWebsocket();
       var queryPayload =
       {
         "request": $scope.configuredEnv
