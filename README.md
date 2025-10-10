@@ -1,6 +1,6 @@
 # Release Information
 
-- **Version**: 1.1.0
+- **Version**: 1.1.1
 
 - **Certified**: Yes
 
@@ -16,7 +16,4 @@
 
 The **CICD Configuration** widget helps set up source control within **Continuous Delivery** solution pack to streamline the content development lifecycle across multiple FortiSOAR environments designated as Development, Staging, and Production through a configuration wizard.
 
-## Next Steps
-
-| [Installation](./docs/setup.md#installation) | [Configuration](./docs/setup.md#configuration) | [Usage](./docs/usage.md) |
-|----------------------------------------------|------------------------------------------------|--------------------------|
+For more information head to [Continuous Delivery](https://github.com/fortinet-fortisoar/solution-pack-cicd/blob/develop/README.md) solution pack documentation.
